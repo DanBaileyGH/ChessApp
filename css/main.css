@@ -1,0 +1,34 @@
+.text-align-center {
+    text-align: center;
+}
+
+#myBoard {
+    height: auto;
+    overflow: visible;
+}
+
+.highlight-white {
+    box-shadow: inset 0 0 3px 3px yellow;
+}
+
+.highlight-black {
+    box-shadow: inset 0 0 3px 3px blue;
+}
+
+.highlight-hint {
+    box-shadow: inset 0 0 3px 3px red;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+.no-outline:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.btn-header {
+    font-size: 20px;
+    font-weight: bold;
+}
