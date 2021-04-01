@@ -31,136 +31,7 @@ board = Chessboard('myBoard', config)
 
 timer = null;
 
-function checkStatus (color) {
 
-    console.log(`checking status for ${color}`);
-
-    if (game.in_checkmate())
-    {
-        $('#status').html(`<b>Checkmate!</b> Oops, <b>${color}</b> lost.`);
-    }
-    else if (game.insufficient_material())
-    {
-        $('#status').html(`It's a <b>draw!</b> (Insufficient Material)`);
-    }
-    else if (game.in_threefold_repetition())
-    {
-        $('#status').html(`It's a <b>draw!</b> (Threefold Repetition)`);
-    }
-    else if (game.in_stalemate())
-    {
-        $('#status').html(`It's a <b>draw!</b> (Stalemate)`);
-    }
-    else if (game.in_draw())
-    {
-        $('#status').html(`It's a <b>draw!</b> (50-move Rule)`);
-    }
-    else if (game.in_check())
-    {
-        $('#status').html(`Oops, <b>${color}</b> is in <b>check!</b>`);
-        return false;
-    }
-    else
-    {
-        $('#status').html(`No check, checkmate, or draw.`)
-        return false;
-    }
-    return true;
-}
-
-function updateAdvantage()
-{
-    if (globalSum > 0)
-    {
-        $('#advantageColor').text('Black');
-        $('#advantageNumber').text(globalSum);
-    }
-    else if (globalSum < 0)
-    {
-        $('#advantageColor').text('White');
-        $('#advantageNumber').text(-globalSum);
-    }
-    else
-    {
-        $('#advantageColor').text('Neither side');
-        $('#advantageNumber').text(globalSum);
-    }
-    $('#advantageBar').attr({
-        "aria-valuenow": `${-globalSum}`,
-        style: `width: ${(-globalSum + 2000) / 4000 * 100}%`,
-    });
-}
-
-/*
- * Calculates the best legal move for the given color.
- */
-function getBestMove (game, color, currSum) {
-
-    positionCount = 0;
-    
-    var depth = 4;
-
-    var d = new Date().getTime();
-    var [bestMove, bestMoveValue] = minimax(game, depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color);
-    var d2 = new Date().getTime();
-    var moveTime = (d2 - d);
-    var positionsPerS = (positionCount * 1000 / moveTime);
-
-    $('#position-count').text(positionCount);
-    $('#time').text(moveTime/1000);
-    $('#positions-per-s').text(Math.round(positionsPerS));
-
-    return [bestMove, bestMoveValue];
-}
-
-/* 
- * Makes the best legal move for the given color.
- */
-function makeBestMove(color) {
-    if (color === 'b')
-    {
-        var move = getBestMove(game, color, globalSum)[0];
-    }
-    else
-    {
-        var move = getBestMove(game, color, -globalSum)[0];
-    }
-
-    globalSum = evaluateBoard(move, globalSum, 'b');
-    updateAdvantage();
-
-    game.move(move);
-    board.position(game.fen());
-
-    if (color === 'b')
-    {
-        console.log("b");
-        checkStatus('black');
-
-        // Highlight black move
-        $board.find('.' + squareClass).removeClass('highlight-black')
-        $board.find('.square-' + move.from).addClass('highlight-black')
-        squareToHighlight = move.to
-        colorToHighlight = 'black'
-
-        $board.find('.square-' + squareToHighlight)
-        .addClass('highlight-' + colorToHighlight)
-    }
-    else
-    {
-        console.log("w");
-        checkStatus('white');
-
-        // Highlight white move
-        $board.find('.' + squareClass).removeClass('highlight-white')
-        $board.find('.square-' + move.from).addClass('highlight-white')
-        squareToHighlight = move.to
-        colorToHighlight = 'white'
-
-        $board.find('.square-' + squareToHighlight)
-        .addClass('highlight-' + colorToHighlight)
-    }
-}
 
 /*
  * Resets the game to its initial state.
@@ -218,7 +89,6 @@ $('#undoBtn').on('click', function() {
         undo();
         window.setTimeout(function() {
             undo();
-            window.setTimeout(function () {showHint()}, 250)
         }, 250);
     }
     else
@@ -241,7 +111,6 @@ $('#redoBtn').on('click', function() {
         redo();
         window.setTimeout(function(){
             redo();
-            window.setTimeout(function () {showHint()}, 250)
         }, 250);
     }
     else
@@ -313,9 +182,6 @@ function onDrop (source, target) {
         // Make the best move for black
         window.setTimeout(function() {
             makeBestMove('b');
-            window.setTimeout(function() {
-                showHint();
-            }, 250);
         }, 250)
     } 
 }

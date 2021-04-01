@@ -315,19 +315,62 @@ function makeBestMove(color) {
     }
 }
 
-/* 
- * Plays Computer vs. Computer, starting with a given color.
- */
-function compVsComp(color)
-{
-    if (!checkStatus({'w': 'white', 'b': 'black'}[color]))
+function checkStatus (color) {
+
+    console.log(`checking status for ${color}`);
+
+    if (game.in_checkmate())
     {
-        timer = window.setTimeout(function () {
-            makeBestMove(color);
-            if (color === 'w') {color = 'b'}
-            else {color = 'w'}
-            compVsComp(color);   
-        }, 250);
+        $('#status').html(`<b>Checkmate!</b> Oops, <b>${color}</b> lost.`);
     }
+    else if (game.insufficient_material())
+    {
+        $('#status').html(`It's a <b>draw!</b> (Insufficient Material)`);
+    }
+    else if (game.in_threefold_repetition())
+    {
+        $('#status').html(`It's a <b>draw!</b> (Threefold Repetition)`);
+    }
+    else if (game.in_stalemate())
+    {
+        $('#status').html(`It's a <b>draw!</b> (Stalemate)`);
+    }
+    else if (game.in_draw())
+    {
+        $('#status').html(`It's a <b>draw!</b> (50-move Rule)`);
+    }
+    else if (game.in_check())
+    {
+        $('#status').html(`Oops, <b>${color}</b> is in <b>check!</b>`);
+        return false;
+    }
+    else
+    {
+        $('#status').html(`No check, checkmate, or draw.`)
+        return false;
+    }
+    return true;
 }
 
+function updateAdvantage()
+{
+    if (globalSum > 0)
+    {
+        $('#advantageColor').text('Black');
+        $('#advantageNumber').text(globalSum);
+    }
+    else if (globalSum < 0)
+    {
+        $('#advantageColor').text('White');
+        $('#advantageNumber').text(-globalSum);
+    }
+    else
+    {
+        $('#advantageColor').text('Neither side');
+        $('#advantageNumber').text(globalSum);
+    }
+    $('#advantageBar').attr({
+        "aria-valuenow": `${-globalSum}`,
+        style: `width: ${(-globalSum + 2000) / 4000 * 100}%`,
+    });
+}
