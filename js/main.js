@@ -32,6 +32,9 @@ board = Chessboard('myBoard', config)
 timer = null;
 
 function checkStatus (color) {
+
+    console.log(`checking status for ${color}`);
+
     if (game.in_checkmate())
     {
         $('#status').html(`<b>Checkmate!</b> Oops, <b>${color}</b> lost.`);
@@ -131,6 +134,7 @@ function makeBestMove(color) {
 
     if (color === 'b')
     {
+        console.log("b");
         checkStatus('black');
 
         // Highlight black move
@@ -144,6 +148,7 @@ function makeBestMove(color) {
     }
     else
     {
+        console.log("w");
         checkStatus('white');
 
         // Highlight white move
@@ -154,22 +159,6 @@ function makeBestMove(color) {
 
         $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
-    }
-}
-
-/* 
- * Plays Computer vs. Computer, starting with a given color.
- */
-function compVsComp(color)
-{
-    if (!checkStatus({'w': 'white', 'b': 'black'}[color]))
-    {
-        timer = window.setTimeout(function () {
-            makeBestMove(color);
-            if (color === 'w') {color = 'b'}
-            else {color = 'w'}
-            compVsComp(color);   
-        }, 250);
     }
 }
 
@@ -186,7 +175,7 @@ function reset() {
     $('#advantageColor').text('Neither side');
     $('#advantageNumber').text(globalSum);
 
-    // Kill the Computer vs. Computer callback
+    // Kill the callback
     if (timer)
     {
         clearTimeout(timer);
@@ -194,34 +183,10 @@ function reset() {
     }
 }
 
-/* 
- * Event listeners for various buttons.
- */
-$('#ruyLopezBtn').on('click', function () {
-    reset();
-    game.load('r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1');
-    board.position(game.fen());
-    window.setTimeout(function() {makeBestMove('b')}, 250)
-})
-$('#italianGameBtn').on('click', function() {
-    reset();
-    game.load('r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1');
-    board.position(game.fen());
-    window.setTimeout(function() {makeBestMove('b')}, 250)
-})
-$('#sicilianDefenseBtn').on('click', function() {
-    reset();
-    game.load('rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1');
-    board.position(game.fen());
-})
 $('#startBtn').on('click', function() {
     reset();
 })
 
-$('#compVsCompBtn').on('click', function() {
-    reset();
-    compVsComp('w');
-})
 $('#resetBtn').on('click', function() {
     reset();
 })
@@ -285,25 +250,6 @@ $('#redoBtn').on('click', function() {
     }
 })
 
-$('#showHint').change(function() {
-    window.setTimeout(showHint, 250);
-})
-
-function showHint() 
-{
-    var showHint = document.getElementById("showHint");
-    $board.find('.' + squareClass).removeClass('highlight-hint');
-
-    // Show hint (best move for white)
-    if (showHint.checked)
-    {
-        var move = getBestMove(game, 'w', -globalSum)[0];
-
-        $board.find('.square-' + move.from).addClass('highlight-hint');
-        $board.find('.square-' + move.to).addClass('highlight-hint');
-    }
-}
-
 /* 
  * The remaining code is adapted from chessboard.js examples #5000 through #5005:
  * https://chessboardjs.com/examples#5000
@@ -363,6 +309,7 @@ function onDrop (source, target) {
 
     if (!checkStatus('black'));
     {
+        console.log("a");
         // Make the best move for black
         window.setTimeout(function() {
             makeBestMove('b');
