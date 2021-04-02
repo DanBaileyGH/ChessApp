@@ -32,7 +32,6 @@ board = Chessboard('myBoard', config)
 timer = null;
 
 
-
 /*
  * Resets the game to its initial state.
  */
@@ -55,10 +54,6 @@ function reset() {
 }
 
 $('#startBtn').on('click', function() {
-    reset();
-})
-
-$('#resetBtn').on('click', function() {
     reset();
 })
 
@@ -176,9 +171,8 @@ function onDrop (source, target) {
     $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
 
-    if (!checkStatus('black'));
+    if (!checkStatus("black"));
     {
-        console.log("a");
         // Make the best move for black
         window.setTimeout(function() {
             makeBestMove('b');
