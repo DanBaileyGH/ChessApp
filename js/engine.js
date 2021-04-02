@@ -173,7 +173,9 @@ function evaluateBoard (move, prevSum, color)
  * Output:
  *  the best move at the root of the current subtree.
  */
-function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color)
+
+//CAN I JUST ALTER A FAKE SECOND GAME TO CHECK FOR CHECKMATES? PASS IT RECURSIVELY AND ALTER IT WITH EVERY NEW CHECKED MOVE? HOW SLOW WILL THIS BE?
+function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakegame)
 {
     positionCount++; 
     var children = game.ugly_moves({verbose: true});
@@ -182,6 +184,23 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color)
     children.sort(function(a, b){return 0.5 - Math.random()});
     
     var currMove;
+
+    //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
+    if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
+        console.log(currMove, "draw found");
+        return [currMove, 0];
+    }
+
+    if (fakegame.in_checkmate()) {
+        if (isMaximizingPlayer) {
+            console.log("white checkmate found");
+            return [currMove, Infinity];
+        } else {
+            console.log("black checkmate found");
+            return [currMove, -Infinity];
+        }
+    }
+
     // Maximum depth exceeded or node is a terminal node (no children)
     if (depth === 0 || children.length === 0)
     {
@@ -199,7 +218,12 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color)
         // Note: in our case, the 'children' are simply modified game states
         var currPrettyMove = game.ugly_move(currMove);
         var newSum = evaluateBoard(currPrettyMove, sum, color);
-        var [childBestMove, childValue] = minimax(game, depth - 1, alpha, beta, !isMaximizingPlayer, newSum, color);
+
+        //testing checking for checkmate and draws by passing around temp fake games (this might be really slow)
+        fakegame = game;
+        fakegame.move(currPrettyMove);
+
+        var [childBestMove, childValue] = minimax(game, depth - 1, alpha, beta, !isMaximizingPlayer, newSum, color, fakegame);
         
         game.undo();
     
@@ -253,10 +277,15 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
     
-    var depth = 4;
+    //WAS 4, 3 WHILE TESTING CHECKMATE CHECKS BECAUSE SLOW
+    var depth = 3;
+
+    //testing way to check for checkmate/draw
+    fakegame = game;
+    console.log("assigned fake game to current game state");
 
     var d = new Date().getTime();
-    var [bestMove, bestMoveValue] = minimax(game, depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color);
+    var [bestMove, bestMoveValue] = minimax(game, depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame);
     var d2 = new Date().getTime();
     var moveTime = (d2 - d);
     var positionsPerS = (positionCount * 1000 / moveTime);
