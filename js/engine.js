@@ -279,7 +279,7 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
     
-    var depth = 4;
+    var depth = 6;
 
     //testing way to check for checkmate/draw
     fakegame = game;
@@ -297,37 +297,6 @@ function getBestMove (game, color, currSum) {
 
     console.log("best move value = ", bestMoveValue);
     return [bestMove, bestMoveValue];
-}
-
-/* 
- * Makes the best legal move for the given color.
- */
-function makeBestMove(color) {
-    if (color === 'b')
-    {
-        var move = getBestMove(game, color, globalSum)[0];
-    }
-    else
-    {
-        var move = getBestMove(game, color, -globalSum)[0];
-    }
-
-    globalSum = evaluateBoard(move, globalSum, 'b');
-    updateAdvantage();
-
-    game.move(move);
-    board.position(game.fen());
-
-    checkStatus('white');
-
-    // Highlight black move
-    $board.find('.' + squareClass).removeClass('highlight-black')
-    $board.find('.square-' + move.from).addClass('highlight-black')
-    squareToHighlight = move.to
-    colorToHighlight = 'black'
-
-    $board.find('.square-' + squareToHighlight)
-    .addClass('highlight-' + colorToHighlight)
 }
 
 function checkStatus (color) {
