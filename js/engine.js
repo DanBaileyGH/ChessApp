@@ -279,7 +279,7 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
     
-    var depth = 6;
+    var depth = 4;
 
     //testing way to check for checkmate/draw
     fakegame = game;
