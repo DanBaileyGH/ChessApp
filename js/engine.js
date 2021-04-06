@@ -35,21 +35,21 @@ var pst_w = {
             [-20,-10,-10,-10,-10,-10,-10,-20]
         ],
     'r': [  
-            [0,  0,  0,  0,  0,  0,  0,  0],
-            [5, 10, 10, 10, 10, 10, 10,  5],
+            [0,  0,  0,  0,  0,  0,   0,  0],
+            [5, 10, 10, 10, 10, 10,   10, 5],
             [-5,  0,  0,  0,  0,  0,  0, -5],
             [-5,  0,  0,  0,  0,  0,  0, -5],
             [-5,  0,  0,  0,  0,  0,  0, -5],
             [-5,  0,  0,  0,  0,  0,  0, -5],
             [-5,  0,  0,  0,  0,  0,  0, -5],
-            [0,  0,  0,  5,  5,  0,  0,  0]
+            [0,   0,  0,  5,  5,  0,  0,  0]
         ],
     'q': [   
             [-20,-10,-10, -5, -5,-10,-10,-20],
             [-10,  0,  0,  0,  0,  0,  0,-10],
             [-10,  0,  5,  5,  5,  5,  0,-10],
-            [-5,  0,  5,  5,  5,  5,  0, -5],
-            [0,  0,  5,  5,  5,  5,  0, -5],
+            [-5,   0,  5,  5,  5,  5,  0, -5],
+            [0,    0,  5,  5,  5,  5,  0, -5],
             [-10,  5,  5,  5,  5,  5,  0,-10],
             [-10,  0,  5,  0,  0,  0,  0,-10],
             [-20,-10,-10, -5, -5,-10,-10,-20]
@@ -61,8 +61,8 @@ var pst_w = {
             [-30,-40,-40,-50,-50,-40,-40,-30],
             [-20,-30,-30,-40,-40,-30,-30,-20],
             [-10,-20,-20,-20,-20,-20,-20,-10],
-            [20, 20,  0,  0,  0,  0, 20, 20],
-            [20, 30, 10,  0,  0, 10, 30, 20]
+            [20,  20,  0,  0,  0,  0, 20, 20],
+            [20, 30,  10,  0,  0, 10, 30, 20]
         ],
 
     // Endgame King Table
@@ -184,7 +184,6 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     children.sort(function(a, b){return 0.5 - Math.random()});
     
     var currMove;
-
     
     //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
     if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
@@ -202,7 +201,6 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
         }
     }
     
-
     // Maximum depth exceeded or node is a terminal node (no children)
     if (depth === 0 || children.length === 0)
     {

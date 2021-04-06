@@ -2,7 +2,7 @@
  * A simple chess AI, by someone who doesn't know how to play chess.
  * Uses the chessboard.js and chess.js libraries.
  * 
- * Copyright (c) 2020 Zhang Zeyu
+ * Original Code 2020 Zhang Zeyu
  */
 
 var STACK_SIZE = 50;                 // maximum size of undo stack
@@ -48,11 +48,20 @@ function makeBestMove(color) {
         var move = getBestMove(game, color, -globalSum)[0];
     }
 
+    var random = Math.floor(Math.random() * 2);
+    console.log(random);
+
+    if (random == 1){
+        //make random move
+        console.log("made random move");
+        move = makeRandomMove();
+    } else {
+        game.move(move);
+        board.position(game.fen());
+    }
+
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
-
-    game.move(move);
-    board.position(game.fen());
 
     checkStatus('white');
 
@@ -64,6 +73,16 @@ function makeBestMove(color) {
 
     $board.find('.square-' + squareToHighlight)
     .addClass('highlight-' + colorToHighlight)
+}
+
+function makeRandomMove () {
+    
+    var possibleMoves = game.moves();
+    var randomIdx = Math.floor(Math.random() * possibleMoves.length);
+    randMove = possibleMoves[randomIdx];
+    game.move(randMove);
+    board.position(game.fen());
+    return randMove;
 }
 
 /*
