@@ -188,7 +188,7 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
     if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
         console.log(currMove, "draw found at depth ", 4-depth);
-        //return [currMove, 0];
+        return [currMove, 0];
     }
 
     if (fakegame.in_checkmate()) {

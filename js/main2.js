@@ -55,6 +55,7 @@ function makeBestMove(color) {
         //make random move
         console.log("made random move");
         move = makeRandomMove();
+        console.log(move);
     } else {
         game.move(move);
         board.position(game.fen());
@@ -76,13 +77,21 @@ function makeBestMove(color) {
 }
 
 function makeRandomMove () {
+
+    var children = game.ugly_moves({verbose: true});
+    children.sort(function(a, b){return 0.5 - Math.random()});
+    currMove = children[1];
+    var currPrettyMove = game.ugly_move(currMove);
+    game.move(currPrettyMove);
     
+    /*
     var possibleMoves = game.moves();
     var randomIdx = Math.floor(Math.random() * possibleMoves.length);
     randMove = possibleMoves[randomIdx];
     game.move(randMove);
+    */
     board.position(game.fen());
-    return randMove;
+    return currPrettyMove;
 }
 
 /*
