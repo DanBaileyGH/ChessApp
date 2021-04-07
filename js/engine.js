@@ -25,14 +25,14 @@ var pst_w = {
             [-50,-40,-30,-30,-30,-30,-40,-50]
         ],
     'b': [ 
-            [-20,-10,-10,-10,-10,-10,-10,-20],
+            [-20,-15,-15,-10,-10,-15,-10,-20],
             [-10,  0,  0,  0,  0,  0,  0,-10],
             [-10,  0,  5, 10, 10,  5,  0,-10],
             [-10,  5,  5, 10, 10,  5,  5,-10],
             [-10,  0, 10, 10, 10, 10,  0,-10],
             [-10, 10, 10, 10, 10, 10, 10,-10],
             [-10,  5,  0,  0,  0,  0,  5,-10],
-            [-20,-10,-10,-10,-10,-10,-10,-20]
+            [-20,-10,-15,-10,-10,-15,-10,-20]
         ],
     'r': [  
             [0,  0,  0,  0,  0,  0,   0,  0],
@@ -187,8 +187,8 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     
     //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
     if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
-        console.log(currMove, "draw found at depth ", 4-depth);
-        return [currMove, 0];
+        console.log(currPrettyMove, "draw found at depth ", 4-depth);
+        return [currPrettyMove, 0];
     }
 
     if (fakegame.in_checkmate()) {
