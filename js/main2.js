@@ -39,6 +39,12 @@ timer = null;
  * Makes the best legal move for the given color.
  */
 function makeBestMove(color) {
+
+    console.log("current globalsum:", globalSum);
+
+    var random = Math.floor(Math.random() * globalSum);
+    console.log("random num:", random);
+
     if (color === 'b')
     {
         var move = getBestMove(game, color, globalSum)[0];
@@ -47,11 +53,9 @@ function makeBestMove(color) {
     {
         var move = getBestMove(game, color, -globalSum)[0];
     }
-
-    var random = Math.floor(Math.random() * 2);
-    console.log(random);
-
-    if (random == 1){
+    
+    
+    if (globalSum > 300 && !(random > (globalSum-100))){ //
         //make random move
         console.log("made random move");
         move = makeRandomMove();
