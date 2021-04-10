@@ -11,18 +11,18 @@ var pst_w = {
             [  5,  5, 10, 25, 25, 10,  5,  5],
             [  0,  0,  0, 20, 20,  0,  0,  0],
             [  5, -5,-10,  0,  0,-10, -5,  5],
-            [  5, 10, 10,-20,-20, 10, 10,  5],
+            [  5, 10, 10,-25,-25, 10, 10,  5],
             [  0, 0,  0,  0,  0,  0,  0,   0]
         ],
     'n': [ 
-            [-50,-40,-20,-30,-30,-20,-40,-50],
+            [-50,-40,-20,-25,-25,-20,-40,-50],
             [-40,-20,  0,  0,  0,  0,-20,-40],
             [-30,  0, 10, 15, 15, 10,  0,-30],
             [-30,  5, 15, 20, 20, 15,  5,-30],
             [-30,  0, 15, 20, 20, 15,  0,-30],
             [-30,  5, 10, 15, 15, 10,  5,-30],
             [-40,-20,  0,  5,  5,  0,-20,-40],
-            [-50,-40,-30,-30,-30,-30,-40,-50]
+            [-50,-40,-25,-25,-25,-25,-40,-50]
         ],
     'b': [ 
             [-20,-15,-15,-10,-10,-15,-10,-20],
@@ -197,7 +197,8 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
             return [currPrettyMove, Number.NEGATIVE_INFINITY];
         } else {
             console.log("black checkmate found at depth ", 4-depth);
-            return [currPrettyMove, Number.POSITIVE_INFINITY];
+            return [currPrettyMove, 10000000 / depth];
+            //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
         }
     }
     
