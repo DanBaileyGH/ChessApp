@@ -42,9 +42,6 @@ function makeBestMove(color) {
 
     console.log("current globalsum:", globalSum);
 
-    var random = Math.floor(Math.random() * globalSum);
-    console.log("random num:", random);
-
     if (color === 'b')
     {
         var move = getBestMove(game, color, globalSum)[0];
@@ -54,8 +51,9 @@ function makeBestMove(color) {
         var move = getBestMove(game, color, -globalSum)[0];
     }
     
-    
-    if (globalSum > 300 && !(random > (globalSum-100))){ //
+    var random = Math.floor(Math.random() * globalSum);
+    console.log("random num:", random);
+    if (globalSum > 300 && !(random > (globalSum-100))){ //this is dumb
         //make random move
         console.log("made random move");
         move = makeRandomMove();
@@ -67,7 +65,6 @@ function makeBestMove(color) {
 
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
-
     checkStatus('white');
 
     // Highlight black move

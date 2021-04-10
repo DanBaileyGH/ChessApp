@@ -194,10 +194,10 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     if (fakegame.in_checkmate()) {
         if (isMaximizingPlayer) {
             console.log("white checkmate found at depth ", 4-depth);
-            return [currPrettyMove, Number.POSITIVE_INFINITY];
+            return [currPrettyMove, Number.NEGATIVE_INFINITY];
         } else {
             console.log("black checkmate found at depth ", 4-depth);
-            return [currPrettyMove, Number.NEGATIVE_INFINITY];
+            return [currPrettyMove, Number.POSITIVE_INFINITY];
         }
     }
     
