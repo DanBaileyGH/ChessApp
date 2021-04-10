@@ -53,8 +53,7 @@ function makeBestMove(color) {
     
     var random = Math.floor(Math.random() * globalSum);
     console.log("random num:", random);
-    if (globalSum > 300 && !(random > (globalSum-100))){ //this is dumb
-        //make random move
+    if (globalSum > 300 && !(random > (globalSum-250))){ //TODO: rethink formula for this
         console.log("made random move");
         move = makeRandomMove();
         console.log(move);
