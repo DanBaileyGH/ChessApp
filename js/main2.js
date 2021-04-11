@@ -74,6 +74,8 @@ function makeBestMove(color) {
 
     $board.find('.square-' + squareToHighlight)
     .addClass('highlight-' + colorToHighlight)
+
+    $('#new').text("Your Move!");
 }
 
 function makeRandomMove () {
@@ -233,8 +235,9 @@ function onDrop (source, target) {
     $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
 
-    if (!checkStatus("black"));
-    {
+    $('#new').text("Thinking...");
+
+    if (!checkStatus("black")); {
         // Make the best move for black
         window.setTimeout(function() {
             makeBestMove('b');

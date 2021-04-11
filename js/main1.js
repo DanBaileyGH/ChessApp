@@ -64,6 +64,8 @@ function makeBestMove(color) {
 
     $board.find('.square-' + squareToHighlight)
     .addClass('highlight-' + colorToHighlight)
+
+    $('#new').text("Your Move!");
 }
 
 /*
@@ -204,6 +206,8 @@ function onDrop (source, target) {
 
     $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
+
+    $('#new').text("Thinking...");
 
     if (!checkStatus("black"));
     {
