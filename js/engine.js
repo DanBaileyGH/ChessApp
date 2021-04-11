@@ -181,31 +181,29 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     var children = game.ugly_moves({verbose: true});
     
     // Sort moves randomly, so the same move isn't always picked on ties
-    children.sort(function(a, b){return 0.5 - Math.random()});
+    //children.sort(function(a, b){return 0.5 - Math.random()});
     
     var currMove;
-    
-    //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
-    if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
-        console.log(currPrettyMove, "draw found at depth ", 4-depth);
-        return [currPrettyMove, 0];
-    }
-
-    if (fakegame.in_checkmate()) {
-        if (isMaximizingPlayer) {
-            console.log("white checkmate found at depth ", 4-depth);
-            return [currPrettyMove, Number.NEGATIVE_INFINITY];
-        } else {
-            console.log("black checkmate found at depth ", 4-depth);
-            return [currPrettyMove, 10000000 / depth];
-            //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
-        }
-    }
     
     // Maximum depth exceeded or node is a terminal node (no children)
     if (depth === 0 || children.length === 0)
     {
-        return [null, sum]
+        //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
+        if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
+            console.log(currPrettyMove, "draw found at depth ", 4-depth);
+            return [currPrettyMove, 0];
+        } else if (fakegame.in_checkmate()) {
+            if (isMaximizingPlayer) {
+                console.log("white checkmate found at depth ", 4-depth);
+                return [currPrettyMove, Number.NEGATIVE_INFINITY];
+            } else {
+                console.log("black checkmate found at depth ", 4-depth);
+                return [currPrettyMove, 10000000 / 4-depth];
+                //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
+            }
+        } else {
+            return [null, sum]
+        }   
     }
 
     // Find maximum/minimum from list of 'children' (possible moves)
