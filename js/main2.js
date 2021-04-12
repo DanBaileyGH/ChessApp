@@ -35,6 +35,11 @@ board = Chessboard('myBoard', config)
 
 timer = null;
 
+var nextBtn = document.getElementById("nextBtn");
+nextBtn.style.visibility = "hidden";
+
+var gameEndTxt = document.getElementById("gameOver");
+
 /* 
  * Makes the best legal move for the given color.
  */
@@ -47,10 +52,10 @@ function makeBestMove(color) {
     } else {
         var move = getBestMove(game, color, -globalSum)[0];
     }
-    
+
     var random = Math.floor(Math.random() * globalSum);
     console.log("random num:", random);
-    if (globalSum > 300 && !(random > (globalSum-250))){ //TODO: rethink formula for this
+    if (globalSum > 300 && !(random > (globalSum - 250))) { //TODO: rethink formula for this
         console.log("made random move");
         move = makeRandomMove();
         console.log(move);
@@ -72,13 +77,22 @@ function makeBestMove(color) {
     $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
 
-    $('#new').text("Your Move!");
+    if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
+        nextBtn.style.visibility = "visible";
+        if (game.in_checkmate()) {
+            gameEndTxt.innerHTML = "Unlucky Loss!"
+        } else {
+            gameEndTxt.innerHTML = "Nice Draw!"
+        }
+    } else {
+        $('#new').text("Your Move!");
+    }
 }
 
-function makeRandomMove () {
+function makeRandomMove() {
 
-    var children = game.ugly_moves({verbose: true});
-    children.sort(function(a, b){return 0.5 - Math.random()});
+    var children = game.ugly_moves({ verbose: true });
+    children.sort(function (a, b) { return 0.5 - Math.random() });
     currMove = children[1];
     var currPrettyMove = game.ugly_move(currMove);
     game.move(currPrettyMove);
@@ -106,7 +120,7 @@ function reset() {
     }
 }
 
-$('#startBtn').on('click', function() {
+$('#startBtn').on('click', function () {
     reset();
 })
 
@@ -123,7 +137,7 @@ function undo() {
     board.position(game.fen());
 }
 
-$('#undoBtn').on('click', function() {
+$('#undoBtn').on('click', function () {
     if (game.history().length >= 2) {
         $board.find('.' + squareClass).removeClass('highlight-white');
         $board.find('.' + squareClass).removeClass('highlight-black');
@@ -131,12 +145,12 @@ $('#undoBtn').on('click', function() {
 
         // Undo twice: Opponent's latest move, followed by player's latest move
         undo();
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             undo();
         }, 250);
     } else {
         alert("Nothing to undo.");
-    }  
+    }
 })
 
 function redo() {
@@ -144,11 +158,11 @@ function redo() {
     board.position(game.fen());
 }
 
-$('#redoBtn').on('click', function() {
+$('#redoBtn').on('click', function () {
     if (undo_stack.length >= 2) {
         // Redo twice: Player's last move, followed by opponent's last move
         redo();
-        window.setTimeout(function(){
+        window.setTimeout(function () {
             redo();
         }, 250);
     } else {
@@ -160,11 +174,11 @@ $('#redoBtn').on('click', function() {
  * The remaining code is adapted from chessboard.js examples #5000 through #5005:
  * https://chessboardjs.com/examples#5000
  */
-function removeGreySquares () {
+function removeGreySquares() {
     $('#myBoard .square-55d63').css('background', '')
 }
 
-function greySquare (square) {
+function greySquare(square) {
     var $square = $('#myBoard .square-' + square)
 
     var background = whiteSquareGrey
@@ -175,7 +189,7 @@ function greySquare (square) {
     $square.css('background', background)
 }
 
-function onDragStart (source, piece) {
+function onDragStart(source, piece) {
     // do not pick up pieces if the game is over
     if (game.game_over()) return false
 
@@ -186,7 +200,7 @@ function onDragStart (source, piece) {
     }
 }
 
-function onDrop (source, target) {
+function onDrop(source, target) {
     undo_stack = [];
     removeGreySquares();
 
@@ -199,13 +213,13 @@ function onDrop (source, target) {
 
     // Illegal move
     if (move === null) return 'snapback'
-    
+
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
 
     // Highlight latest move
     $board.find('.' + squareClass).removeClass('highlight-white')
-    
+
     $board.find('.square-' + move.from).addClass('highlight-white')
     squareToHighlight = move.to
     colorToHighlight = 'white'
@@ -217,13 +231,22 @@ function onDrop (source, target) {
 
     if (!checkStatus("black")); {
         // Make the best move for black
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             makeBestMove('b');
         }, 250)
-    } 
+    }
+
+    if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()){
+        nextBtn.style.visibility = "visible";
+        if(game.in_checkmate()) {
+            gameEndTxt.innerHTML = "Nice Win!"
+        } else {
+            gameEndTxt.innerHTML = "Nice Draw!"
+        }
+    }
 }
 
-function onMouseoverSquare (square, piece) {
+function onMouseoverSquare(square, piece) {
     // get list of possible moves for this square
     var moves = game.moves({
         square: square,
@@ -242,10 +265,10 @@ function onMouseoverSquare (square, piece) {
     }
 }
 
-function onMouseoutSquare (square, piece) {
+function onMouseoutSquare(square, piece) {
     removeGreySquares()
 }
 
-function onSnapEnd () {
+function onSnapEnd() {
     board.position(game.fen())
 }

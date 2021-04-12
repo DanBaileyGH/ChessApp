@@ -103,10 +103,18 @@
                 </div>
             </div>
         </main>
-        <footer>
-            <p class="text-align-center"> 
+        <br>
+            <br>
+            <p class="text-align-center" id="gameOver"> </p>
             
-            </p>
+            <div class="row justify-content-center">
+                <button class="btn btn-primary" margin="10px" onclick="redirect()" id="nextBtn">Wrap-up (please finish)</button>
+            </div>
         </footer>
+        <script>
+            function redirect(){
+                location.href = "wrapup.html";
+            }
+        </script>
     </body>
 </html>
