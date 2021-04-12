@@ -35,6 +35,9 @@ board = Chessboard('myBoard', config)
 
 timer = null;
 
+var nextBtn = document.getElementById("nextBtn");
+nextBtn.style.display = "none";
+
 /* 
  * Makes the best legal move for the given color.
  */
@@ -200,7 +203,7 @@ function onDrop (source, target) {
     } 
 
     if (game.in_checkmate()){
-        
+
     }
 }
 

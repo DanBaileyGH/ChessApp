@@ -10,8 +10,8 @@ var pst_w = {
             [  10, 10, 20, 30, 30, 20, 10, 10],
             [  5,  5, 10, 25, 25, 10,  5,  5],
             [  0,  0,  0, 20, 20,  0,  0,  0],
-            [  5, -5,-10,  0,  0,-10, -5,  5],
-            [  5, 10, 10,-25,-25, 10, 10,  5],
+            [  5, -5,-10, -5, -5,-10, -5,  5],
+            [  5, 10, 10,-30,-30, 10, 10,  5],
             [  0, 0,  0,  0,  0,  0,  0,   0]
         ],
     'n': [ 
@@ -294,7 +294,7 @@ function updateAdvantage() {
         $('#advantageColor').text('Neither side');
         $('#advantageNumber').text(globalSum);
     }
-    
+
     $('#advantageBar').attr({
         "aria-valuenow": `${-globalSum}`,
         style: `width: ${(-globalSum + 2000) / 4000 * 100}%`,
