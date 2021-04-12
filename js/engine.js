@@ -94,65 +94,46 @@ var pstSelf = {'w': pst_w, 'b': pst_b};
  * Evaluates the board at this point in time, 
  * using the material weights and piece square tables.
  */
-function evaluateBoard (move, prevSum, color) 
-{
+function evaluateBoard (move, prevSum, color) {
     var from = [8 - parseInt(move.from[1]), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
     var to = [8 - parseInt(move.to[1]), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
 
     // Change endgame behavior for kings
-    if (prevSum < -1500)
-    {
+    if (prevSum < -1500) {
         if (move.piece === 'k') {move.piece = 'k_e'}
         else if (move.captured === 'k') {move.captured = 'k_e'}
     }
 
-    if ('captured' in move)
-    {
-        // Opponent piece was captured (good for us)
-        if (move.color === color)
-        {
+    if ('captured' in move) {
+        if (move.color === color) { // Opponent piece was captured (good for us)
             prevSum += (weights[move.captured] + pstOpponent[move.color][move.captured][to[0]][to[1]]);
-        }
-        // Our piece was captured (bad for us)
-        else
-        {
+        } else { // Our piece was captured (bad for us)
             prevSum -= (weights[move.captured] + pstSelf[move.color][move.captured][to[0]][to[1]]);
         }
     }
 
-    if (move.flags.includes('p'))
-    {
+    if (move.flags.includes('p')) {
         // NOTE: promote to queen for simplicity
         move.promotion = 'q';
-
-        // Our piece was promoted (good for us)
-        if (move.color === color)
-        {
+        if (move.color === color) { // Our piece was promoted (good for us)
             prevSum -= (weights[move.piece] + pstSelf[move.color][move.piece][from[0]][from[1]]);
             prevSum += (weights[move.promotion] + pstSelf[move.color][move.promotion][to[0]][to[1]]);
-        }
-        // Opponent piece was promoted (bad for us)
-        else
-        {
+        } else { // Opponent piece was promoted (bad for us)
             prevSum += (weights[move.piece] + pstSelf[move.color][move.piece][from[0]][from[1]]);
             prevSum -= (weights[move.promotion] + pstSelf[move.color][move.promotion][to[0]][to[1]]);
         }
     }
-    else
-    {
+    else {
         // The moved piece still exists on the updated board, so we only need to update the position value
-        if (move.color !== color)
-        {
+        if (move.color !== color) {
             prevSum += pstSelf[move.color][move.piece][from[0]][from[1]];
             prevSum -= pstSelf[move.color][move.piece][to[0]][to[1]];
         }
-        else
-        {
+        else {
             prevSum -= pstSelf[move.color][move.piece][from[0]][from[1]];
             prevSum += pstSelf[move.color][move.piece][to[0]][to[1]];
         }
     }
-    
     return prevSum;
 }
 
@@ -173,22 +154,16 @@ function evaluateBoard (move, prevSum, color)
  * Output:
  *  the best move at the root of the current subtree.
  */
-
-//CAN I JUST ALTER A FAKE SECOND GAME TO CHECK FOR CHECKMATES? PASS IT RECURSIVELY AND ALTER IT WITH EVERY NEW CHECKED MOVE? HOW SLOW WILL THIS BE?
 function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakegame, currPrettyMove)
 {
     positionCount++; 
     var children = game.ugly_moves({verbose: true});
     
-    // Sort moves randomly, so the same move isn't always picked on ties
-    //children.sort(function(a, b){return 0.5 - Math.random()});
-    
     var currMove;
     
     // Maximum depth exceeded or node is a terminal node (no children)
-    if (depth === 0 || children.length === 0)
-    {
-        //CHECK FOR CHECKMATE/DRAW IN FAKE GAME HERE
+    if (depth === 0 || children.length === 0) {
+        
         if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
             console.log(currPrettyMove, "draw found at depth ", 4-depth);
             return [currPrettyMove, 0];
@@ -210,8 +185,7 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     var maxValue = Number.NEGATIVE_INFINITY;
     var minValue = Number.POSITIVE_INFINITY;
     var bestMove;
-    for (var i = 0; i < children.length; i++)
-    {
+    for (var i = 0; i < children.length; i++) {
         currMove = children[i];
 
         // Note: in our case, the 'children' are simply modified game states
@@ -226,45 +200,35 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
         
         game.undo();
     
-        if (isMaximizingPlayer)
-        {
-            if (childValue > maxValue)
-            {
+        if (isMaximizingPlayer) {
+            if (childValue > maxValue) {
                 maxValue = childValue;
                 bestMove = currPrettyMove;
-            }
-            if (childValue > alpha)
-            {
+            } 
+            
+            if (childValue > alpha) {
                 alpha = childValue;
             }
-        }
-
-        else
-        {
-            if (childValue < minValue)
-            {
+        } else {
+            if (childValue < minValue) {
                 minValue = childValue;
                 bestMove = currPrettyMove;
             }
-            if (childValue < beta)
-            {
+            
+            if (childValue < beta) {
                 beta = childValue;
             }
         }
 
         // Alpha-beta pruning
-        if (alpha >= beta)
-        {
+        if (alpha >= beta) {
             break;
         }
     }
 
-    if (isMaximizingPlayer)
-    {
+    if (isMaximizingPlayer) {
         return [bestMove, maxValue]
-    }
-    else
-    {
+    } else {
         return [bestMove, minValue];
     }
 }
@@ -278,7 +242,6 @@ function getBestMove (game, color, currSum) {
     
     var depth = 4;
 
-    //testing way to check for checkmate/draw
     fakegame = game;
     console.log("assigned fake game to current game state");
 
@@ -300,56 +263,38 @@ function checkStatus (color) {
 
     console.log(`checking status for ${color}`);
 
-    if (game.in_checkmate())
-    {
+    if (game.in_checkmate()) {
         $('#status').html(`<b>Checkmate!</b> Oops, <b>${color}</b> lost.`);
-    }
-    else if (game.insufficient_material())
-    {
+    } else if (game.insufficient_material()) {
         $('#status').html(`It's a <b>draw!</b> (Insufficient Material)`);
-    }
-    else if (game.in_threefold_repetition())
-    {
+    } else if (game.in_threefold_repetition()) {
         $('#status').html(`It's a <b>draw!</b> (Threefold Repetition)`);
-    }
-    else if (game.in_stalemate())
-    {
+    } else if (game.in_stalemate()) {
         $('#status').html(`It's a <b>draw!</b> (Stalemate)`);
-    }
-    else if (game.in_draw())
-    {
+    } else if (game.in_draw()) {
         $('#status').html(`It's a <b>draw!</b> (50-move Rule)`);
-    }
-    else if (game.in_check())
-    {
+    } else if (game.in_check()) {
         $('#status').html(`Oops, <b>${color}</b> is in <b>check!</b>`);
         return false;
-    }
-    else
-    {
+    } else {
         $('#status').html(`No check, checkmate, or draw.`)
         return false;
     }
     return true;
 }
 
-function updateAdvantage()
-{
-    if (globalSum > 0)
-    {
+function updateAdvantage() {
+    if (globalSum > 0) {
         $('#advantageColor').text('Black');
         $('#advantageNumber').text(globalSum);
-    }
-    else if (globalSum < 0)
-    {
+    } else if (globalSum < 0) {
         $('#advantageColor').text('White');
         $('#advantageNumber').text(-globalSum);
-    }
-    else
-    {
+    } else {
         $('#advantageColor').text('Neither side');
         $('#advantageNumber').text(globalSum);
     }
+    
     $('#advantageBar').attr({
         "aria-valuenow": `${-globalSum}`,
         style: `width: ${(-globalSum + 2000) / 4000 * 100}%`,
