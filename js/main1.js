@@ -198,6 +198,10 @@ function onDrop (source, target) {
             makeBestMove('b');
         }, 250)
     } 
+
+    if (game.in_checkmate()){
+        
+    }
 }
 
 function onMouseoverSquare (square, piece) {
