@@ -1,11 +1,11 @@
 /* 
- * A simple chess AI, by someone who doesn't know how to play chess.
+ * A simple chess AI.
  * Uses the chessboard.js and chess.js libraries.
  * 
- * Original Code 2020 Zhang Zeyu
+ * Modified From Original Code 2020 Zhang Zeyu
  */
 
-var STACK_SIZE = 50;                 // maximum size of undo stack
+var STACK_SIZE = 50; // maximum size of undo stack
 
 var board = null
 var $board = $('#myBoard')
@@ -14,7 +14,7 @@ var game = new Chess()
 //testing checking checkmate/draw
 fakegame = null;
 
-var globalSum = 0                     // always from black's perspective. Negative for white's perspective.
+var globalSum = 0 // always from black's perspective. Negative for white's perspective.
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
 var squareClass = 'square-55d63'
@@ -42,12 +42,9 @@ function makeBestMove(color) {
 
     console.log("current globalsum:", globalSum);
 
-    if (color === 'b')
-    {
+    if (color === 'b') {
         var move = getBestMove(game, color, globalSum)[0];
-    }
-    else
-    {
+    } else {
         var move = getBestMove(game, color, -globalSum)[0];
     }
     
@@ -73,7 +70,7 @@ function makeBestMove(color) {
     colorToHighlight = 'black'
 
     $board.find('.square-' + squareToHighlight)
-    .addClass('highlight-' + colorToHighlight)
+        .addClass('highlight-' + colorToHighlight)
 
     $('#new').text("Your Move!");
 }
@@ -85,13 +82,6 @@ function makeRandomMove () {
     currMove = children[1];
     var currPrettyMove = game.ugly_move(currMove);
     game.move(currPrettyMove);
-    
-    /*
-    var possibleMoves = game.moves();
-    var randomIdx = Math.floor(Math.random() * possibleMoves.length);
-    randMove = possibleMoves[randomIdx];
-    game.move(randMove);
-    */
     board.position(game.fen());
     return currPrettyMove;
 }
@@ -110,8 +100,7 @@ function reset() {
     $('#advantageNumber').text(globalSum);
 
     // Kill the callback
-    if (timer)
-    {
+    if (timer) {
         clearTimeout(timer);
         timer = null;
     }
@@ -123,23 +112,19 @@ $('#startBtn').on('click', function() {
 
 var undo_stack = [];
 
-function undo()
-{
+function undo() {
     var move = game.undo();
     undo_stack.push(move);
 
     // Maintain a maximum stack size
-    if (undo_stack.length > STACK_SIZE)
-    {
+    if (undo_stack.length > STACK_SIZE) {
         undo_stack.shift();
     }
     board.position(game.fen());
 }
 
 $('#undoBtn').on('click', function() {
-
-    if (game.history().length >= 2)
-    {
+    if (game.history().length >= 2) {
         $board.find('.' + squareClass).removeClass('highlight-white');
         $board.find('.' + squareClass).removeClass('highlight-black');
         $board.find('.' + squareClass).removeClass('highlight-hint');
@@ -149,31 +134,24 @@ $('#undoBtn').on('click', function() {
         window.setTimeout(function() {
             undo();
         }, 250);
-    }
-    else
-    {
+    } else {
         alert("Nothing to undo.");
     }  
 })
 
-function redo()
-{
+function redo() {
     game.move(undo_stack.pop());
     board.position(game.fen());
 }
 
 $('#redoBtn').on('click', function() {
-
-    if (undo_stack.length >= 2)
-    {
+    if (undo_stack.length >= 2) {
         // Redo twice: Player's last move, followed by opponent's last move
         redo();
         window.setTimeout(function(){
             redo();
         }, 250);
-    }
-    else
-    {
+    } else {
         alert("Nothing to redo.");
     }
 })
