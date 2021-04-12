@@ -36,7 +36,9 @@ board = Chessboard('myBoard', config)
 timer = null;
 
 var nextBtn = document.getElementById("nextBtn");
-nextBtn.style.display = "none";
+nextBtn.style.visibility = "hidden";
+
+var gameEndTxt = document.getElementById("gameOver");
 
 /* 
  * Makes the best legal move for the given color.
@@ -65,7 +67,16 @@ function makeBestMove(color) {
     $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
 
-    $('#new').text("Your Move!");
+    if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
+        nextBtn.style.visibility = "visible";
+        if(game.in_checkmate()) {
+            gameEndTxt.innerHTML = "Unlucky Loss!"
+        } else {
+            gameEndTxt.innerHTML = "Nice Draw!"
+        }
+    } else {
+        $('#new').text("Your Move!");
+    }
 }
 
 /*
@@ -202,8 +213,13 @@ function onDrop (source, target) {
         }, 250)
     } 
 
-    if (game.in_checkmate()){
-
+    if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()){
+        nextBtn.style.visibility = "visible";
+        if(game.in_checkmate()) {
+            gameEndTxt.innerHTML = "Nice Win!"
+        } else {
+            gameEndTxt.innerHTML = "Nice Draw!"
+        }
     }
 }
 
