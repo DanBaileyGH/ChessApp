@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DBZWQYWJY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-8DBZWQYWJY');
+    </script>
     <title>Chess AI</title>
 
     <link rel="stylesheet" href="css/main.css">
@@ -29,7 +38,8 @@
                         <p> Please take the survey below, It shouldnt take more than a few minutes </p>
                     </div>
                     <div class="row justify-content-center">
-                        <p> If you want to go back and try playing against either AI again, links will be below, but please do the survey first </p>
+                        <p> If you want to go back and try playing against either AI again, links will be below, but
+                            please do the survey first </p>
                     </div>
                     <div class="row justify-content-center">
                         <button class="btn btn-primary" margin="10px" onclick="redirect()">Survey</button>
@@ -45,16 +55,17 @@
     </main>
 
     <script>
-        function redirect(){
+        function redirect() {
             location.href = "wrapup.html"; //INSERT SURVEY URL HERE
         }
-        function redirect1(){
+        function redirect1() {
             location.href = "freegame1.html"; //INSERT SURVEY URL HERE
         }
-        function redirect2(){
+        function redirect2() {
             location.href = "freegame2.html"; //INSERT SURVEY URL HERE
         }
     </script>
 
 </body>
+
 </html>

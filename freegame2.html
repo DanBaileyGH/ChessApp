@@ -1,117 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Chess AI</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <meta
-          name="description"           
-          content="A simple chess AI.">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" 
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
-            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
-            crossorigin="anonymous">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DBZWQYWJY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="css/main.css">
+        gtag('config', 'G-8DBZWQYWJY');
+    </script>
+    <title>Chess AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Google Icons (Material Design) -->
-        <link rel="stylesheet" 
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            crossorigin="anonymous">
+    <meta name="description" content="A simple chess AI.">
 
-        <!-- Font Awesome -->
-        <script src="https://kit.fontawesome.com/5b14db5f0b.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-        <!-- jQuery --> 
-        <script src="js/jquery.js"></script>
-        
-        <!-- Chessboard JS -->
-        <script src="js/chessboard-1.0.0.js"></script>
-        <link rel="stylesheet" href="css/chessboard-1.0.0.min.css"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
 
-        <!-- Chess JS (slightly modified) -->
-        <script defer src="js/chess.js"></script>
+    <!-- Google Icons (Material Design) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5b14db5f0b.js" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Chessboard JS -->
+    <script src="js/chessboard-1.0.0.js"></script>
+    <link rel="stylesheet" href="css/chessboard-1.0.0.min.css" />
+
+    <!-- Chess JS (slightly modified) -->
+    <script defer src="js/chess.js"></script>
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous">
         </script>
 
-        <!-- Bootstrap JS --> 
-        <script defer
-            src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" 
-            integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" 
-            crossorigin="anonymous">
-        </script>
+    <!-- Custom JS -->
+    <script defer src="js/main2.js"></script>
+    <script defer src="js/engine.js"></script>
+</head>
 
-        <!-- Custom JS -->
-        <script defer src="js/main2.js"></script>
-        <script defer src="js/engine.js"></script>
-    </head>
-    <body>
-        <main>
-            <div class="container my-3">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h1 class="text-align-center">Chess AI 2</h1>
-                        <div class="row justify-content-center">
-                            <span id="position-count">0</span> &nbsp positions evaluated in &nbsp <span id="time">0</span>s.
-                        </div>
-                        <div class="row mb-3 justify-content-center">
-                            That's &nbsp <span id="positions-per-s">0</span> &nbsp positions / s.
-                        </div>
-                        <div class="row mb-3 justify-content-center">
-                          <button class="btn btn-primary" id="startBtn">Start Position</button>
-                        </div>
-                        <div class="row my-3 text-align-center">
-                            <div class="col-md-12">
-                                <h2>Advantage</h2>
-                                <p><span id="advantageColor">Neither side</span> has the advantage 
-                                    (+<span id="advantageNumber">0</span>).</p>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" 
-                                        role="progressbar" aria-valuenow="0" style="width: 50%"
-                                        aria-valuemin="-2000" aria-valuemax="4000" id='advantageBar'>
-                                    </div>
+<body>
+    <main>
+        <div class="container my-3">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="text-align-center">Chess AI 2</h1>
+                    <div class="row justify-content-center">
+                        <span id="position-count">0</span> &nbsp positions evaluated in &nbsp <span id="time">0</span>s.
+                    </div>
+                    <div class="row mb-3 justify-content-center">
+                        That's &nbsp <span id="positions-per-s">0</span> &nbsp positions / s.
+                    </div>
+                    <div class="row mb-3 justify-content-center">
+                        <button class="btn btn-primary" id="startBtn">Start Position</button>
+                    </div>
+                    <div class="row my-3 text-align-center">
+                        <div class="col-md-12">
+                            <h2>Advantage</h2>
+                            <p><span id="advantageColor">Neither side</span> has the advantage
+                                (+<span id="advantageNumber">0</span>).</p>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated"
+                                    role="progressbar" aria-valuenow="0" style="width: 50%" aria-valuemin="-2000"
+                                    aria-valuemax="4000" id='advantageBar'>
                                 </div>
                             </div>
                         </div>
-                        <div class="row my-3 text-align-center">
-                            <div class="col-md-12">
-                                <h2>Status</h2>
-                                <p><span id="status">No check, checkmate, or draw.</span></p>
-                            </div>
-                        </div>
-                        <div class="row my-3 text-align-center">
-                            <div class="col-md-12">
-                                <h2><span id="new">You Start!</span></h2>
-                            </div>
+                    </div>
+                    <div class="row my-3 text-align-center">
+                        <div class="col-md-12">
+                            <h2>Status</h2>
+                            <p><span id="status">No check, checkmate, or draw.</span></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div id="myBoard"></div>
-                        <div class="row my-3 text-align-center">
-                            <div class="col-md-5 my-2">
-                                <button class="btn btn-danger" id="undoBtn">Undo</button>
-                            </div>
-                            <div class="col-md-5 my-2">
-                                <button class="btn btn-success" id="redoBtn">Redo</button>
-                            </div>
+                    <div class="row my-3 text-align-center">
+                        <div class="col-md-12">
+                            <h2><span id="new">You Start!</span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="myBoard"></div>
+                    <div class="row my-3 text-align-center">
+                        <div class="col-md-5 my-2">
+                            <button class="btn btn-danger" id="undoBtn">Undo</button>
+                        </div>
+                        <div class="col-md-5 my-2">
+                            <button class="btn btn-success" id="redoBtn">Redo</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-        <br>
-            <br>
-            <p class="text-align-center" id="gameOver"> </p>
-            <div class="row justify-content-center">
-                <button class="btn btn-primary" margin="10px" onclick="redirect()">Try AI 1</button>
-            </div>
-        </footer>
-        <script>
-            function redirect(){
-                location.href = "freegame1.html";
-            }
-        </script>
-    </body>
+        </div>
+    </main>
+    <br>
+    <br>
+    <p class="text-align-center" id="gameOver"> </p>
+    <div class="row justify-content-center">
+        <button class="btn btn-primary" margin="10px" onclick="redirect()">Try AI 1</button>
+    </div>
+    </footer>
+    <script>
+        function redirect() {
+            location.href = "freegame1.html";
+        }
+    </script>
+</body>
+
 </html>
