@@ -44,7 +44,7 @@
         </script>
 
         <!-- Custom JS -->
-        <script defer src="js/main2.js"></script>
+        <script defer src="js/main1.js"></script>
         <script defer src="js/engine.js"></script>
     </head>
     <body>
@@ -52,7 +52,7 @@
             <div class="container my-3">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h1 class="text-align-center">Chess AI 2</h1>
+                        <h1 class="text-align-center">Chess AI 1</h1>
                         <div class="row justify-content-center">
                             <span id="position-count">0</span> &nbsp positions evaluated in &nbsp <span id="time">0</span>s.
                         </div>
@@ -89,7 +89,6 @@
                     </div>
                     <div class="col-md-6">
                         <div id="myBoard"></div>
-                        <!--
                         <div class="row my-3 text-align-center">
                             <div class="col-md-5 my-2">
                                 <button class="btn btn-danger" id="undoBtn">Undo</button>
@@ -98,22 +97,21 @@
                                 <button class="btn btn-success" id="redoBtn">Redo</button>
                             </div>
                         </div>
-                        -->
                     </div>
                 </div>
             </div>
         </main>
-        <br>
+        <footer>
+            <br>
             <br>
             <p class="text-align-center" id="gameOver"> </p>
-            
             <div class="row justify-content-center">
-                <button class="btn btn-primary" margin="10px" onclick="redirect()" id="nextBtn">Wrap-up (please finish)</button>
+                <button class="btn btn-primary" margin="10px" onclick="redirect()">Try AI 2</button>
             </div>
         </footer>
         <script>
             function redirect(){
-                location.href = "wrapup.html";
+                location.href = "freegame2.html";
             }
         </script>
     </body>
