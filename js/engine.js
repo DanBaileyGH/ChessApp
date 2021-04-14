@@ -240,7 +240,7 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
     
-    var depth = 4;
+    var depth = 3;
 
     fakegame = game;
     console.log("assigned fake game to current game state");
