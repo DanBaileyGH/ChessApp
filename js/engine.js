@@ -242,6 +242,7 @@ function getBestMove (game, color, currSum) {
     
     var depth = 3;
 
+    console.log("depth ", depth);
     fakegame = game;
     console.log("assigned fake game to current game state");
 
