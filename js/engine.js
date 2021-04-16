@@ -171,15 +171,15 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     if (depth === 0 || children.length === 0) {
         
         if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
-            console.log(currPrettyMove, "draw found at depth ", 4-depth);
+            console.log(currPrettyMove, "draw found at depth ", 3-depth);
             return [currPrettyMove, 0];
         } else if (fakegame.in_checkmate()) {
             if (isMaximizingPlayer) {
-                console.log("white checkmate found at depth ", 4-depth);
+                console.log("white checkmate found at depth ", 3-depth);
                 return [currPrettyMove, Number.NEGATIVE_INFINITY];
             } else {
-                console.log("black checkmate found at depth ", 4-depth);
-                return [currPrettyMove, 10000000 / 4-depth];
+                console.log("black checkmate found at depth ", 3-depth);
+                return [currPrettyMove, 10000000 / 3-depth];
                 //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
             }
         } else {
@@ -246,7 +246,7 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
     
-    var depth = 4;
+    var depth = 3;
 
     console.log("depth ", depth);
     fakegame = game;
