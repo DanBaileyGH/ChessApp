@@ -95,9 +95,15 @@ var pstSelf = {'w': pst_w, 'b': pst_b};
  * using the material weights and piece square tables.
  */
 function evaluateBoard (move, prevSum, color) {
-    var from = [8 - parseInt(move.from[1]), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
-    var to = [8 - parseInt(move.to[1]), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
-
+    try {
+        var from = [8 - parseInt(move.from[1]), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
+        var to = [8 - parseInt(move.to[1]), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
+    } catch (error) {
+        //invalid move inputted, happens sometimes, dont know how or why
+        //this should stop the game from switching sides when this error happens
+        return null;
+    }
+    
     // Change endgame behavior for kings
     if (prevSum < -1500) {
         if (move.piece === 'k') {move.piece = 'k_e'}
@@ -240,7 +246,7 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
     
-    var depth = 3;
+    var depth = 4;
 
     console.log("depth ", depth);
     fakegame = game;
