@@ -1,7 +1,7 @@
 /* 
  * Altered weights, based on page at https://www.chessprogramming.org/Simplified_Evaluation_Function
  */
-
+var globalDepth = 4
 var weights = { 'p': 100, 'n': 320, 'b': 330, 'r': 500, 'q': 900, 'k': 60000, 'k_e': 60000 };
 var pst_w = {
     'p':[
@@ -11,8 +11,8 @@ var pst_w = {
             [  5,  5, 10, 25, 25, 10,  5,  5],
             [  0,  0,  0, 20, 20,  0,  0,  0],
             [  5, -5,-10, -5, -5,-10, -5,  5],
-            [  5, 10, 10,-30,-30, 10, 10,  5],
-            [  0, 0,  0,  0,  0,  0,  0,   0]
+            [  5,  0,  0,-30,-30,  0,  0,  5],
+            [  0,  0,  0,  0,  0,  0,  0,  0]
         ],
     'n': [ 
             [-50,-40,-20,-25,-25,-20,-40,-50],
@@ -101,7 +101,9 @@ function evaluateBoard (move, prevSum, color) {
     } catch (error) {
         //invalid move inputted, happens sometimes, dont know how or why
         //this should stop the game from switching sides when this error happens
-        return null;
+        console.log("switch sides bug caused by passing in this to evaluate function:", move)
+        console.log("freaking switch sides bug caught in evaluateBoard function");
+        return prevSum;
     }
     
     // Change endgame behavior for kings
@@ -171,15 +173,20 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     if (depth === 0 || children.length === 0) {
         
         if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
-            console.log(currPrettyMove, "draw found at depth ", 3-depth);
+            console.log(currPrettyMove, "draw found at depth ", (globalDepth-depth));
             return [currPrettyMove, 0];
         } else if (fakegame.in_checkmate()) {
             if (isMaximizingPlayer) {
-                console.log("white checkmate found at depth ", 3-depth);
+                console.log("white checkmate found at depth ", (globalDepth-depth));
                 return [currPrettyMove, Number.NEGATIVE_INFINITY];
             } else {
-                console.log("black checkmate found at depth ", 3-depth);
-                return [currPrettyMove, 10000000 / 3-depth];
+                if (depth > 1) {
+                    console.log(currPrettyMove, "black checkmate found at depth ", (globalDepth-depth));
+                } else {
+                    console.log("black checkmate found at depth ", (globalDepth-depth));
+                }
+                console.log("returning", currPrettyMove, "with value of", 10000000 / (globalDepth-depth))
+                return [currPrettyMove, 10000000 / (globalDepth-depth)];
                 //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
             }
         } else {
@@ -245,15 +252,13 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
 function getBestMove (game, color, currSum) {
 
     positionCount = 0;
-    
-    var depth = 3;
 
-    console.log("depth ", depth);
+    console.log("depth ", globalDepth);
     fakegame = game;
     console.log("assigned fake game to current game state");
 
     var d = new Date().getTime();
-    var [bestMove, bestMoveValue] = minimax(game, depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
+    var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
     var d2 = new Date().getTime();
     var moveTime = (d2 - d);
     var positionsPerS = (positionCount * 1000 / moveTime);

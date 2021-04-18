@@ -40,14 +40,16 @@ nextBtn.style.visibility = "hidden";
 
 var gameEndTxt = document.getElementById("gameOver");
 
+var turnnumber = 0; 
+
 /* 
  * Makes the best legal move for the given color.
  */
 function makeBestMove(color) {
     if (color === 'b') {
-        var move = getBestMove(game, color, globalSum)[0];
+        var move = getBestMove(game, color, globalSum, turnnumber)[0];
     } else {
-        var move = getBestMove(game, color, -globalSum)[0];
+        var move = getBestMove(game, color, -globalSum, turnnumber)[0];
     }
 
     globalSum = evaluateBoard(move, globalSum, 'b');
@@ -59,8 +61,15 @@ function makeBestMove(color) {
     checkStatus('white');
 
     // Highlight black move
-    $board.find('.' + squareClass).removeClass('highlight-black')
-    $board.find('.square-' + move.from).addClass('highlight-black')
+    try{
+        $board.find('.' + squareClass).removeClass('highlight-black')
+        $board.find('.square-' + move.from).addClass('highlight-black')
+    } catch (error) {
+        //sometimes this breaks, dont have time to figure out why
+        console.log("switch sides bug error caught in makebestmove function")
+        console.log("move that caused bug:", move)
+    }
+    
     squareToHighlight = move.to
     colorToHighlight = 'black'
 
@@ -77,6 +86,7 @@ function makeBestMove(color) {
     } else {
         $('#new').text("Your Move!");
     }
+    turnnumber += 1;
 }
 
 /*
