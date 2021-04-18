@@ -45,9 +45,9 @@ var gameEndTxt = document.getElementById("gameOver");
  */
 function makeBestMove(color) {
     if (color === 'b') {
-        var move = getBestMove(game, color, globalSum, turnnumber)[0];
+        var move = getBestMove(game, color, globalSum)[0];
     } else {
-        var move = getBestMove(game, color, -globalSum, turnnumber)[0];
+        var move = getBestMove(game, color, -globalSum)[0];
     }
 
     globalSum = evaluateBoard(move, globalSum, 'b');
