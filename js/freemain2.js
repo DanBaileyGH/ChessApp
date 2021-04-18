@@ -40,8 +40,6 @@ timer = null;
  */
 function makeBestMove(color) {
 
-    console.log("current globalsum:", globalSum);
-
     if (color === 'b') {
         var move = getBestMove(game, color, globalSum)[0];
     } else {
@@ -49,11 +47,9 @@ function makeBestMove(color) {
     }
 
     var random = Math.floor(Math.random() * globalSum);
-    console.log("random num:", random);
+
     if (globalSum > 300 && !(random > (globalSum - 250))) { //TODO: rethink formula for this
-        console.log("made random move");
         move = makeRandomMove();
-        console.log(move);
     } else {
         game.move(move);
         board.position(game.fen());
