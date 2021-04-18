@@ -176,7 +176,7 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
             return [currPrettyMove, 0];
         } else if (fakegame.in_checkmate()) {
             if (isMaximizingPlayer) {
-                return [currPrettyMove, Number.NEGATIVE_INFINITY];
+                return [currPrettyMove, -1000000];
             } else {
                 return [currPrettyMove, 10000000 / (globalDepth-depth)];
                 //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1

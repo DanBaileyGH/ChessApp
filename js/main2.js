@@ -65,13 +65,19 @@ function makeBestMove(color) {
     checkStatus('white');
 
     // Highlight black move
-    $board.find('.' + squareClass).removeClass('highlight-black')
-    $board.find('.square-' + move.from).addClass('highlight-black')
-    squareToHighlight = move.to
-    colorToHighlight = 'black'
-
-    $board.find('.square-' + squareToHighlight)
-        .addClass('highlight-' + colorToHighlight)
+    try{
+        $board.find('.' + squareClass).removeClass('highlight-black')
+        $board.find('.square-' + move.from).addClass('highlight-black')
+        squareToHighlight = move.to
+        colorToHighlight = 'black'
+    
+        $board.find('.square-' + squareToHighlight)
+            .addClass('highlight-' + colorToHighlight)
+    } catch (error) {
+        //sometimes this breaks, dont have time to figure out why
+        console.log("switch sides bug error caught in makebestmove function")
+        console.log("move that caused bug:", move)
+    }
 
     if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
         nextBtn.style.visibility = "visible";
@@ -225,7 +231,7 @@ function onDrop(source, target) {
 
     $('#new').text("Thinking...");
 
-    if (!checkStatus("black")); {
+    if (!checkStatus("black")) {
         // Make the best move for black
         window.setTimeout(function () {
             makeBestMove('b');
