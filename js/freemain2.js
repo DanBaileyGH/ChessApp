@@ -48,7 +48,7 @@ function makeBestMove(color) {
 
     var random = Math.floor(Math.random() * globalSum);
 
-    if (globalSum > 300 && !(random > (globalSum - 250))) { //TODO: rethink formula for this
+    if (globalSum > 300 && !(random > (globalSum - 250))) {
         move = makeRandomMove();
     } else {
         game.move(move);
@@ -67,7 +67,6 @@ function makeBestMove(color) {
 
     $board.find('.square-' + squareToHighlight)
         .addClass('highlight-' + colorToHighlight)
-
 
     $('#new').text("Your Move!");
 }

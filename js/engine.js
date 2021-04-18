@@ -173,19 +173,11 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     if (depth === 0 || children.length === 0) {
         
         if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
-            console.log(currPrettyMove, "draw found at depth ", (globalDepth-depth));
             return [currPrettyMove, 0];
         } else if (fakegame.in_checkmate()) {
             if (isMaximizingPlayer) {
-                console.log("white checkmate found at depth ", (globalDepth-depth));
                 return [currPrettyMove, Number.NEGATIVE_INFINITY];
             } else {
-                if (depth > 1) {
-                    console.log(currPrettyMove, "black checkmate found at depth ", (globalDepth-depth));
-                } else {
-                    console.log("black checkmate found at depth ", (globalDepth-depth));
-                }
-                console.log("returning", currPrettyMove, "with value of", 10000000 / (globalDepth-depth))
                 return [currPrettyMove, 10000000 / (globalDepth-depth)];
                 //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
             }
@@ -253,9 +245,7 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
 
-    console.log("depth ", globalDepth);
     fakegame = game;
-    console.log("assigned fake game to current game state");
 
     var d = new Date().getTime();
     var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
@@ -267,13 +257,10 @@ function getBestMove (game, color, currSum) {
     $('#time').text(moveTime/1000);
     $('#positions-per-s').text(Math.round(positionsPerS));
 
-    console.log("best move value = ", bestMoveValue);
     return [bestMove, bestMoveValue];
 }
 
 function checkStatus (color) {
-
-    console.log(`checking status for ${color}`);
 
     if (game.in_checkmate()) {
         $('#status').html(`<b>Checkmate!</b> Oops, <b>${color}</b> lost.`);
