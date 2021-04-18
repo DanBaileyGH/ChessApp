@@ -40,8 +40,6 @@ nextBtn.style.visibility = "hidden";
 
 var gameEndTxt = document.getElementById("gameOver");
 
-var turnnumber = 0; 
-
 /* 
  * Makes the best legal move for the given color.
  */
@@ -86,7 +84,6 @@ function makeBestMove(color) {
     } else {
         $('#new').text("Your Move!");
     }
-    turnnumber += 1;
 }
 
 /*
