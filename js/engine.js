@@ -1,7 +1,7 @@
 /* 
  * Altered weights, based on page at https://www.chessprogramming.org/Simplified_Evaluation_Function
  */
-var globalDepth = 3
+var globalDepth = 4
 var weights = { 'p': 100, 'n': 320, 'b': 330, 'r': 500, 'q': 900, 'k': 60000, 'k_e': 60000 };
 var pst_w = {
     'p':[
