@@ -252,13 +252,12 @@ function getBestMove (game, color, currSum) {
     var possibleMoves = game.moves();
     console.log(possibleMoves.length)
 
-    if (possibleMoves.length < 40) { //trying to remove 45s+ turns
+    if (possibleMoves.length < 35) { //trying to remove 45s+ turns
         var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
     } else {
         var [bestMove, bestMoveValue] = minimax(game, (globalDepth-1), Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
     }
 
-    
     var d2 = new Date().getTime();
     var moveTime = (d2 - d);
     var positionsPerS = (positionCount * 1000 / moveTime);
