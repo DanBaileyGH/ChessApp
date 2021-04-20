@@ -162,7 +162,7 @@ function evaluateBoard (move, prevSum, color) {
  * Output:
  *  the best move at the root of the current subtree.
  */
-function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakegame, currPrettyMove)
+function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currPrettyMove)
 {
     positionCount++; 
     var children = game.ugly_moves({verbose: true});
@@ -171,9 +171,9 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     
     // Maximum depth exceeded or node is a terminal node (no children)
     if (depth === 0 || children.length === 0) {
-        if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
+        if (game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
             return [currPrettyMove, 0];
-        } else if (fakegame.in_checkmate()) {
+        } else if (game.in_checkmate()) {
             if (isMaximizingPlayer) {
                 return [currPrettyMove, -1000000];
             } else {
@@ -196,11 +196,7 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
         var currPrettyMove = game.ugly_move(currMove);
         var newSum = evaluateBoard(currPrettyMove, sum, color);
 
-        //testing checking for checkmate and draws by passing around temp fake games (this might be really slow)
-        fakegame = game;
-        fakegame.move(currPrettyMove);
-
-        var [childBestMove, childValue] = minimax(game, depth - 1, alpha, beta, !isMaximizingPlayer, newSum, color, fakegame, currPrettyMove);
+        var [childBestMove, childValue] = minimax(game, depth - 1, alpha, beta, !isMaximizingPlayer, newSum, color, currPrettyMove);
         
         game.undo();
     
@@ -244,17 +240,15 @@ function getBestMove (game, color, currSum) {
 
     positionCount = 0;
 
-    fakegame = game;
-
     var d = new Date().getTime();
 
     var possibleMoves = game.moves();
     console.log(possibleMoves.length)
 
     if (possibleMoves.length < 35) { //trying to remove 45s+ turns
-        var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
+        var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, null);
     } else {
-        var [bestMove, bestMoveValue] = minimax(game, (globalDepth-1), Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, fakegame, null);
+        var [bestMove, bestMoveValue] = minimax(game, (globalDepth-1), Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, null);
     }
 
     var d2 = new Date().getTime();

@@ -11,9 +11,6 @@ var board = null
 var $board = $('#myBoard')
 var game = new Chess()
 
-//testing checking checkmate/draw
-fakegame = null;
-
 var globalSum = 0 // always from black's perspective. Negative for white's perspective.
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
