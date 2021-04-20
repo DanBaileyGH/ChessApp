@@ -170,20 +170,22 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currP
     var currMove;
     
     // Maximum depth exceeded or node is a terminal node (no children)
+    
     if (depth === 0 || children.length === 0) {
-        if (game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
+        if (game.in_draw() || game.in_stalemate() || game.in_threefold_repetition()) {
             return [currPrettyMove, 0];
         } else if (game.in_checkmate()) {
             if (isMaximizingPlayer) {
                 return [currPrettyMove, -1000000];
             } else {
                 return [currPrettyMove, 10000000 / (globalDepth-depth)];
-                //cant return infinity as it treats mate in 1 same as mate in 2, not just take the mate in 1
+                //cant return infinity as it treats mate in 1 same as mate in 2, this just takes the mate in 1
             }
         } else {
             return [null, sum]
         }   
     }
+    
 
     // Find maximum/minimum from list of 'children' (possible moves)
     var maxValue = Number.NEGATIVE_INFINITY;
