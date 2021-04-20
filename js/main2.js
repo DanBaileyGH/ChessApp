@@ -45,7 +45,6 @@ var gameEndTxt = document.getElementById("gameOver");
  */
 function makeBestMove(color) {
 
-
     if (color === 'b') {
         var move = getBestMove(game, color, globalSum)[0];
     } else {
@@ -53,13 +52,13 @@ function makeBestMove(color) {
     }
 
     var random = Math.floor(Math.random() * globalSum);
-    if (globalSum > 300 && !(random > (globalSum - 250))) { //TODO: rethink formula for this
-        move = makeRandomMove();
-    } else {
-        game.move(move);
-        board.position(game.fen());
+    if (globalSum > 300 && !(random > (globalSum - 250))) {
+        move = getNonOptimalMove(color);
     }
 
+    game.move(move);
+    board.position(game.fen());
+    
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
     checkStatus('white');
@@ -91,15 +90,24 @@ function makeBestMove(color) {
     }
 }
 
-function makeRandomMove() {
-
-    var children = game.ugly_moves({ verbose: true });
-    children.sort(function (a, b) { return 0.5 - Math.random() });
-    currMove = children[1];
-    var currPrettyMove = game.ugly_move(currMove);
-    game.move(currPrettyMove);
-    board.position(game.fen());
-    return currPrettyMove;
+//Essentially makes a move with depth 1, this way it wont make an inherently bad move (and wont miss mate in 1s),
+//but will almost certainly not make optimal moves, allowing the player to catch up.
+function getNonOptimalMove(color) {
+    console.log("made non optimal move");
+    var children = game.ugly_moves({verbose: true});
+    var bestMove = null
+    var bestMoveValue = Number.NEGATIVE_INFINITY;
+    for (var i = 0; i < children.length; i++) {
+        currMove = children[i];
+        var currPrettyMove = game.ugly_move(currMove);
+        var value = evaluateBoard(currPrettyMove, globalSum, color);
+        if (value > bestMoveValue){
+            bestMove = currPrettyMove;
+            bestMoveValue = value;
+        }
+        game.undo();
+    }
+    return bestMove;
 }
 
 /*

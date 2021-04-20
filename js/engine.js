@@ -171,7 +171,6 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, fakeg
     
     // Maximum depth exceeded or node is a terminal node (no children)
     if (depth === 0 || children.length === 0) {
-        
         if (fakegame.in_draw() || fakegame.in_stalemate() || fakegame.in_threefold_repetition() || fakegame.insufficient_material()) {
             return [currPrettyMove, 0];
         } else if (fakegame.in_checkmate()) {
