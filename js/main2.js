@@ -43,16 +43,24 @@ var gameEndTxt = document.getElementById("gameOver");
 function makeBestMove(color) {
 
     if (color === 'b') {
-        var move = getBestMove(game, color, globalSum)[0];
+        var [move, moveValue] = getBestMove(game, color, globalSum);
     } else {
         var move = getBestMove(game, color, -globalSum)[0];
     }
 
-    var random = Math.floor(Math.random() * globalSum);
-    if (globalSum > 300 && !(random > (globalSum - 250))) {
-        move = getNonOptimalMove(color);
-    }
+    console.log("bestmove:", move, "bestmovevalue:", moveValue)
+    //console.log(moveValue)
 
+    //artificial stupidity
+    //if (moveValue < 10000) { 
+        //bot doesnt miss forced mate in 2s while ahead, avoics frustration with getting stuck on just your king
+        var random = Math.floor(Math.random() * globalSum);
+        if (globalSum > 300 && !(random > (globalSum - 250))) { 
+            //random chance of worse move, only when bot is fairly ahead, more likely the more ahead
+            move = getNonOptimalMove(color);
+        }
+    //}
+    
     game.move(move);
     board.position(game.fen());
     
