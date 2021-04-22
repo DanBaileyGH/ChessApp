@@ -33,7 +33,9 @@ board = Chessboard('myBoard', config)
 timer = null;
 
 var nextBtn = document.getElementById("nextBtn");
-nextBtn.style.visibility = "hidden";
+if (nextBtn != null){
+    nextBtn.style.visibility = "hidden";
+}
 
 var gameEndTxt = document.getElementById("gameOver");
 
@@ -172,8 +174,9 @@ function onDrop(source, target) {
     } 
 
     if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()){
-        nextBtn.style.visibility = "visible";
-        if(game.in_checkmate()) {
+        if (nextBtn != null){
+            nextBtn.style.visibility = "visible";
+        } if(game.in_checkmate()) {
             gameEndTxt.innerHTML = "Nice Win!"
         } else {
             gameEndTxt.innerHTML = "Nice Draw!"

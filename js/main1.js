@@ -8,9 +8,6 @@ function makeBestMove(color) {
     } else {
         var move = getBestMove(game, color, -globalSum)[0];
     }
-
-    console.log("best move", move)
-
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
 
@@ -35,8 +32,9 @@ function makeBestMove(color) {
     }
     
     if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
-        nextBtn.style.visibility = "visible";
-        if (game.in_checkmate()) {
+        if (nextBtn != null){
+            nextBtn.style.visibility = "visible";
+        } if (game.in_checkmate()) {
             gameEndTxt.innerHTML = "Unlucky Loss!"
         } else {
             gameEndTxt.innerHTML = "Nice Draw!"
