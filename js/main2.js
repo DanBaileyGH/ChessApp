@@ -48,18 +48,15 @@ function makeBestMove(color) {
         var move = getBestMove(game, color, -globalSum)[0];
     }
 
-    console.log("bestmove:", move, "bestmovevalue:", moveValue)
-    //console.log(moveValue)
-
     //artificial stupidity
-    //if (moveValue < 10000) { 
-        //bot doesnt miss forced mate in 2s while ahead, avoics frustration with getting stuck on just your king
+    if (moveValue < 10000) { 
+        //bot doesnt miss forced mate in 2s while ahead, avoids frustration with getting stuck on just your king
         var random = Math.floor(Math.random() * globalSum);
         if (globalSum > 300 && !(random > (globalSum - 250))) { 
             //random chance of worse move, only when bot is fairly ahead, more likely the more ahead
             move = getNonOptimalMove(color);
         }
-    //}
+    }
     
     game.move(move);
     board.position(game.fen());
@@ -95,7 +92,7 @@ function makeBestMove(color) {
     }
 }
 
-//Essentially makes a move with depth 1, this way it wont make an inherently bad move (and wont miss mate in 1s),
+//Essentially makes a move with depth 1, this way it wont make an inherently bad initial move,
 //but will almost certainly not make optimal moves, allowing the player to catch up.
 function getNonOptimalMove(color) {
     console.log("made non optimal move");
