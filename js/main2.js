@@ -52,7 +52,7 @@ function makeBestMove(color) {
     if (moveValue < 10000) { 
         //bot doesnt miss forced mate in 2s while ahead, avoids frustration with getting stuck on just your king
         var random = Math.floor(Math.random() * globalSum);
-        if (globalSum > 300 && !(random > (globalSum - 250))) { 
+        if (globalSum > 300 && !(random > (globalSum - 200))) { 
             //random chance of worse move, only when bot is fairly ahead, more likely the more ahead
             move = getNonOptimalMove(color);
         }
