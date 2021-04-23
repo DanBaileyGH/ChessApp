@@ -258,6 +258,12 @@ function getBestMove (game, color, currSum) {
     var positionsPerS = (positionCount * 1000 / moveTime);
 
     $('#position-count').text(positionCount);
+    if(positionCount > 100000){
+        $('#position-count').css("font-weight", "bold");
+    } else {
+        $('#position-count').css("font-weight", "normal")
+    }
+    
     $('#time').text(moveTime/1000);
     $('#positions-per-s').text(Math.round(positionsPerS));
 
