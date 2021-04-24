@@ -1,6 +1,7 @@
 
 /* 
  * Makes the best legal move for the given color.
+ * Modified by me
  */
 function makeBestMove(color) {
 
@@ -37,11 +38,12 @@ function makeBestMove(color) {
         $board.find('.square-' + squareToHighlight)
             .addClass('highlight-' + colorToHighlight)
     } catch (error) {
-        //sometimes this breaks, dont have time to figure out why
+        //sometimes an incorrect function call can result in the player switching to the black pieces, this is for debugging this
         console.log("switch sides bug error caught in makebestmove function")
         console.log("move that caused bug:", move)
     }
 
+    //checking if game is over, updating status
     if (game.in_checkmate() || game.in_draw() || game.in_stalemate() || game.in_threefold_repetition() || game.insufficient_material()) {
         if (nextBtn != null){
             nextBtn.style.visibility = "visible";
@@ -57,6 +59,7 @@ function makeBestMove(color) {
 
 //Essentially makes a move with depth 1, this way it wont make an inherently bad initial move,
 //but will almost certainly not make optimal moves, allowing the player to catch up.
+//Written by me
 function getNonOptimalMove(color) {
     console.log("made non optimal move");
     var children = game.ugly_moves({verbose: true});
