@@ -45,3 +45,7 @@ function makeBestMove(color) {
         $('#new').text("Your Move!");
     }
 }
+
+function fudgeEvaluation(sum) {
+    return sum
+}

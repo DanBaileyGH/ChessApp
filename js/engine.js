@@ -150,7 +150,7 @@ function evaluateBoard (move, prevSum, color) {
             prevSum += pstSelf[move.color][move.piece][to[0]][to[1]];
         }
     }
-    return prevSum;
+    return fudgeEvaluation(prevSum);
 }
 
 /*
@@ -234,7 +234,6 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currP
 
 /*
  * Gets the best move for the AI side using the minimax function and returns the move and its value.
- * Slightly modified by me to reduce the number of super long turns the bot takes.
  */
 function getBestMove (game, color, currSum) {
 
@@ -242,7 +241,7 @@ function getBestMove (game, color, currSum) {
     var d = new Date().getTime();
 
     var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, null);
-    
+
     var d2 = new Date().getTime();
     var moveTime = (d2 - d);
     var positionsPerS = (positionCount * 1000 / moveTime);

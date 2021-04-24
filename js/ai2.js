@@ -77,3 +77,8 @@ function getNonOptimalMove(color) {
     }
     return bestMove;
 }
+
+function fudgeEvaluation(sum) {
+    random = Math.floor(Math.random() * 20) - 10;
+    return (sum + random)
+}
