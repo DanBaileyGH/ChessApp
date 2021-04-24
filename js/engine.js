@@ -163,12 +163,11 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currP
 {
     positionCount++; 
     var children = game.ugly_moves({verbose: true});
-    
     var currMove;
     
     //Maximum depth exceeded or node is a terminal node (no children)
-    if (depth === 0 || children.length === 0) {
-        if (game.in_draw() || game.in_stalemate() || game.in_threefold_repetition()) {
+    if (children.length === 0) {
+        if (game.in_stalemate() || game.in_threefold_repetition()) {
             //Check if move leads to a draw, if it does give it value of 0
             return [currPrettyMove, 0];
         } else if (game.in_checkmate()) {
@@ -179,10 +178,10 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currP
                 return [currPrettyMove, 10000000 / (globalDepth-depth)];
                 //Cant return infinity as it treats mate in 1 same as mate in 2, this just takes the mate in 1
             }
-        } else {
-            return [null, sum]
-        }   
-    }
+        }  
+    }   else if (depth === 0) {
+        return [null, sum]
+    }  
     
     //Find maximum/minimum from list of 'children' (possible moves)
     var maxValue = Number.NEGATIVE_INFINITY;
@@ -242,15 +241,8 @@ function getBestMove (game, color, currSum) {
     positionCount = 0;
     var d = new Date().getTime();
 
-    var possibleMoves = game.moves();
-    console.log(possibleMoves.length)
-
-    if (possibleMoves.length < 35) { //trying to remove 45s+ turns
-        var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, null);
-    } else {
-        var [bestMove, bestMoveValue] = minimax(game, (globalDepth-1), Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, null);
-    }
-
+    var [bestMove, bestMoveValue] = minimax(game, globalDepth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true, currSum, color, null);
+    
     var d2 = new Date().getTime();
     var moveTime = (d2 - d);
     var positionsPerS = (positionCount * 1000 / moveTime);
