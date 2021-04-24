@@ -1,6 +1,7 @@
 
 /* 
- * Makes the best legal move for the given color.
+ * Makes the "best" legal move for the given color.
+ * Will not always make best move as this function adds a couple methods of artificial stupidity 
  * Modified by me
  */
 function makeBestMove(color) {
@@ -11,24 +12,25 @@ function makeBestMove(color) {
         var move = getBestMove(game, color, -globalSum)[0];
     }
 
-    //artificial stupidity
+    //Artificial stupidity
     if (moveValue < 10000) { 
-        //bot doesnt miss forced mate in 2s while ahead, avoids frustration with getting stuck on just your king
+        //Bot doesnt miss forced mate in 2s while ahead, avoids frustration with getting stuck on just your king
         var random = Math.floor(Math.random() * globalSum);
         if (globalSum > 300 && !(random > (globalSum - 200))) { 
-            //random chance of worse move, only when bot is fairly ahead, more likely the more ahead
+            //Random chance of worse move, only when bot is fairly ahead, more likely the more ahead
             move = getNonOptimalMove(color);
         }
     }
     
     game.move(move);
     board.position(game.fen());
-    
+
+    //Note: evaluation wont always be correct due to evaluation fudging for moves, but should never stray too far off of correct
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
     checkStatus('white');
 
-    // Highlight black move
+    //Highlight black move
     try{
         $board.find('.' + squareClass).removeClass('highlight-black')
         $board.find('.square-' + move.from).addClass('highlight-black')
@@ -58,13 +60,14 @@ function makeBestMove(color) {
 }
 
 //Essentially makes a move with depth 1, this way it wont make an inherently bad initial move,
-//but will almost certainly not make optimal moves, allowing the player to catch up.
+//But will almost certainly not make optimal moves, allowing the player to catch up.
 //Written by me
 function getNonOptimalMove(color) {
     console.log("made non optimal move");
     var children = game.ugly_moves({verbose: true});
     var bestMove = null
     var bestMoveValue = Number.NEGATIVE_INFINITY;
+    //Checking each possible move to see its evaluation, and finds the highest evaluated move
     for (var i = 0; i < children.length; i++) {
         currMove = children[i];
         var currPrettyMove = game.ugly_move(currMove);
@@ -78,6 +81,8 @@ function getNonOptimalMove(color) {
     return bestMove;
 }
 
+//Slightly "fudges" the move evaluation for AI 2 to add some more random artificial stupidity to the bot
+//Written by me
 function fudgeEvaluation(sum) {
     random = Math.floor(Math.random() * 20) - 10;
     return (sum + random)

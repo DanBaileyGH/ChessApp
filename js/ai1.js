@@ -46,6 +46,8 @@ function makeBestMove(color) {
     }
 }
 
+//Used in AI2, needs to have a method here to avoid error
+//"Written" by me
 function fudgeEvaluation(sum) {
     return sum
 }
