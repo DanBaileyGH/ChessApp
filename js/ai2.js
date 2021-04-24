@@ -63,7 +63,6 @@ function makeBestMove(color) {
 //But will almost certainly not make optimal moves, allowing the player to catch up.
 //Written by me
 function getNonOptimalMove(color) {
-    console.log("made non optimal move");
     var children = game.ugly_moves({verbose: true});
     var bestMove = null
     var bestMoveValue = Number.NEGATIVE_INFINITY;
