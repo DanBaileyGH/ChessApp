@@ -159,9 +159,10 @@ function evaluateBoard (move, prevSum, color) {
  * to the bot missing mates and moving into stalemates from far ahead.
  * Modified by me.
  */
-function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currPrettyMove)
-{
+function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currPrettyMove) {
     positionCount++; 
+	
+	//Gets all possible moves from the current search state
     var children = game.ugly_moves({verbose: true});
     var currMove;
     
