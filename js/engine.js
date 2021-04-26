@@ -180,7 +180,7 @@ function minimax(game, depth, alpha, beta, isMaximizingPlayer, sum, color, currP
                 //Cant return infinity as it treats mate in 1 same as mate in 2, this just takes the mate in 1
             }
         }  
-    }   else if (depth === 0) {
+    } else if (depth === 0) {
         return [null, sum]
     }  
     
