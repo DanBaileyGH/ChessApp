@@ -21,29 +21,16 @@ board = Chessboard('myBoard', config)
 
 timer = null;
 
-/*
- * Resets the game to its initial state.
- */
-function reset() {
-    game.reset();
-    globalSum = 0;
-    board.position(game.fen());
-    $('#advantageColor').text('Neither side');
-    $('#advantageNumber').text(globalSum);
-
-    //Resets timer (unused in this version)
-    if (timer) {
-        clearTimeout(timer);
-        timer = null;
-    }
-
-    sleep(2000).then(() => {makeBestMove("w")});
+function start() {
+    sleep(500).then(() => {makeBestMove("w")});
 }
-
-//Resets board if user clicks start position button
+//Starts AI vs "Random" game
 $('#startBtn').on('click', function() {
-    reset();
+    start();
 })
+
+
+
 
 //Checks status of game (in check, draw, etc)
 function checkStatus (color) {
@@ -95,12 +82,16 @@ function updateAdvantage() {
  */
 function makeBestMove(color) {
 
+    
     console.log("making move for", color)
     if (color === 'b') {
         var move = getBestMove(game, color, globalSum)[0];
     } else {
         var move = getNonOptimalMove(color);
     }
+
+    console.log("movecolour =", move.color)
+    
     globalSum = evaluateBoard(move, globalSum, color);
     updateAdvantage();
 
@@ -109,10 +100,10 @@ function makeBestMove(color) {
 
     if (color === 'b') {
         checkStatus('white');
-        sleep(2000).then(() => {makeBestMove("w")});
+        sleep(500).then(() => {makeBestMove("w")});
     } else {
         checkStatus('black');
-        sleep(2000).then(() => {makeBestMove("b")});
+        sleep(500).then(() => {makeBestMove("b")});
     }
 }
 
