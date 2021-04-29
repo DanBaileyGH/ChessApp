@@ -109,6 +109,9 @@ function makeBestMove(color) {
         var [move, moveValue] = getBestMove(game, color, globalSum);
     } else {
         //"random" opponent moves
+        if (turnNumber == 1) {
+            var move = getRandomMove();
+        }
         var random = Math.floor(Math.random() * 10);
         if (random < 7) {
             var move = getNonOptimalMove("w");
