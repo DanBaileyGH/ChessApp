@@ -21,16 +21,31 @@ board = Chessboard('myBoard', config)
 
 timer = null;
 
-function start() {
-    sleep(500).then(() => {makeBestMove("w")});
-}
 //Starts AI vs "Random" game
 $('#startBtn').on('click', function() {
-    start();
+    reset();
+    compVsComp('w')
 })
 
+function reset() {
+    game.reset();
+    globalSum = 0;
+    board.position(game.fen());
+    $('#advantageColor').text('Neither side');
+    $('#advantageNumber').text(globalSum);
 
+    // Kill the Computer vs. Computer callback
+    if (timer)
+    {
+        clearTimeout(timer);
+        timer = null;
+    }
+}
 
+//Resets AI vs "Random" game
+$('#resetBtn').on('click', function() {
+    reset();
+})
 
 //Checks status of game (in check, draw, etc)
 function checkStatus (color) {
@@ -87,32 +102,36 @@ function makeBestMove(color) {
     if (color === 'b') {
         var [move, moveValue] = getBestMove(game, color, globalSum);
     } else {
-        var move = getBestMove(game, color, -globalSum)[0];
+        var move = getNonOptimalMove(color);
     }
 
     //Artificial stupidity
-    if (moveValue < 10000) { 
+    if (moveValue < 10000 && color === 'b') { 
         //Bot doesnt miss forced mate in 2s while ahead, avoids frustration with getting stuck on just your king
         var random = Math.floor(Math.random() * globalSum);
         if (globalSum > 300 && !(random > (globalSum - 200))) { 
             //Random chance of worse move, only when bot is fairly ahead, more likely the more ahead
+            console.log("non optimal move for black")
             move = getNonOptimalMove(color);
         }
     }
     //Note: evaluation wont always be correct due to evaluation fudging for moves, but should never stray too far off of correct
-    globalSum = evaluateBoard(move, globalSum, color);
+    globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
 
     game.move(move);
     board.position(game.fen());
+}
 
-    
-    if (color === 'b') {
-        checkStatus('white');
-        sleep(500).then(() => {makeBestMove("w")});
-    } else {
-        checkStatus('black');
-        sleep(500).then(() => {makeBestMove("b")});
+function compVsComp(color) {
+    if (!checkStatus({'w': 'white', 'b': 'black'}[color]))
+    {
+        timer = window.setTimeout(function () {
+            makeBestMove(color);
+            if (color === 'w') {color = 'b'}
+            else {color = 'w'}
+            compVsComp(color);   
+        }, 500);
     }
 }
 
@@ -140,7 +159,7 @@ function getNonOptimalMove(color) {
 //Slightly "fudges" the move evaluation for AI 2 to add some more random artificial stupidity to the bot
 //Written by me
 function fudgeEvaluation(sum) {
-    random = Math.floor(Math.random() * 20) - 10;
+    var random = Math.floor(Math.random() * 20) - 10;
     return (sum + random)
 }
 
