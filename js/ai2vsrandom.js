@@ -102,7 +102,12 @@ function makeBestMove(color) {
     if (color === 'b') {
         var [move, moveValue] = getBestMove(game, color, globalSum);
     } else {
-        var move = getNonOptimalMove("w");
+        var random = Math.floor(Math.random() * 10);
+        if (random < 7) {
+            var move = getNonOptimalMove("w");
+        } else {
+            var move = getRandomMove();
+        }
     }
 
     //Artificial stupidity
@@ -157,6 +162,7 @@ function getNonOptimalMove(color) {
 }
 
 function getRandomMove() {
+    console.log("random move for white");
     var children = game.ugly_moves({verbose: true});
     var random = Math.floor(Math.random() * children.length);
     var move = game.ugly_move(children[random]);
