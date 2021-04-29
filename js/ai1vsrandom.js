@@ -101,10 +101,13 @@ function makeBestMove(color) {
     if (color === 'b') {
         var move = getBestMove(game, color, globalSum)[0];
     } else {
-        var move = getNonOptimalMove(color);
+        var random = Math.floor(Math.random() * 10);
+        if (random < 7) {
+            var move = getNonOptimalMove("w");
+        } else {
+            var move = getRandomMove();
+        }
     }
-
-    console.log("movecolour =", move.color)
     
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
@@ -129,6 +132,13 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function getRandomMove() {
+    console.log("random move for white");
+    var children = game.ugly_moves({verbose: true});
+    var random = Math.floor(Math.random() * children.length);
+    var move = game.ugly_move(children[random]);
+    return move;
+}
 
 //Used in AI2, needs to have a method here to avoid error
 //"Written" by me
