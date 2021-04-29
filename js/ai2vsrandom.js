@@ -102,7 +102,7 @@ function makeBestMove(color) {
     if (color === 'b') {
         var [move, moveValue] = getBestMove(game, color, globalSum);
     } else {
-        var move = getNonOptimalMove(color);
+        var move = getNonOptimalMove("w");
     }
 
     //Artificial stupidity
@@ -154,6 +154,13 @@ function getNonOptimalMove(color) {
         game.undo();
     }
     return bestMove;
+}
+
+function getRandomMove() {
+    var children = game.ugly_moves({verbose: true});
+    var random = Math.floor(Math.random() * children.length);
+    var move = game.ugly_move(children[random]);
+    return move;
 }
 
 //Slightly "fudges" the move evaluation for AI 2 to add some more random artificial stupidity to the bot
