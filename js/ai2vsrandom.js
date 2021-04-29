@@ -5,6 +5,9 @@
 
 var STACK_SIZE = 50; // maximum size of undo stack
 
+var turnNumber = 1;
+var $turnNumber = $('#turnNumber') 
+
 var board = null
 var $board = $('#myBoard')
 var game = new Chess()
@@ -31,6 +34,8 @@ $('#startBtn').on('click', function() {
 function reset() {
     game.reset();
     globalSum = 0;
+    turnNumber = 1;
+    $turnNumber.text(turnNumber);
     board.position(game.fen());
     $('#advantageColor').text('Neither side');
     $('#advantageNumber').text(globalSum);
@@ -136,6 +141,8 @@ function compVsComp(color) {
     {
         timer = window.setTimeout(function () {
             makeBestMove(color);
+            $turnNumber.text(turnNumber);
+            turnNumber++;
             if (color === 'w') {color = 'b'}
             else {color = 'w'}
             compVsComp(color);   
