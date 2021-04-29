@@ -105,17 +105,18 @@ function makeBestMove(color) {
     if (color === 'b') {
         var move = getBestMove(game, color, globalSum)[0];
     } else {
+        //"random" opponent moves
         if (turnNumber == 1) {
             var move = getRandomMove();
-        }
-        //"random" opponent moves
-        var random = Math.floor(Math.random() * 10);
-        if (random < 7) {
-            var move = getNonOptimalMove("w");
         } else {
-            var move = getRandomMove();
+            var random = Math.floor(Math.random() * 10);
+            if (random < 7) {
+                var move = getNonOptimalMove("w");
+            } else {
+                var move = getRandomMove();
+            }
         }
-    }
+    }  
     
     globalSum = evaluateBoard(move, globalSum, 'b');
     updateAdvantage();
