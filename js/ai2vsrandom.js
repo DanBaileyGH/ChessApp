@@ -1,5 +1,5 @@
 /* 
- * The main JS file, contains functions that deal with the board, user interaction, and UI elements.
+ * The main JS file for AI 2 vs random, contains functions that deal with the board, user interaction, and UI elements.
  * Many funcions altered from original by me
  */
 
@@ -27,6 +27,7 @@ $('#startBtn').on('click', function() {
     compVsComp('w')
 })
 
+//resets game, kills any callback
 function reset() {
     game.reset();
     globalSum = 0;
@@ -102,6 +103,7 @@ function makeBestMove(color) {
     if (color === 'b') {
         var [move, moveValue] = getBestMove(game, color, globalSum);
     } else {
+        //"random" opponent moves
         var random = Math.floor(Math.random() * 10);
         if (random < 7) {
             var move = getNonOptimalMove("w");
@@ -128,6 +130,7 @@ function makeBestMove(color) {
     board.position(game.fen());
 }
 
+//manages the game once you press start
 function compVsComp(color) {
     if (!checkStatus({'w': 'white', 'b': 'black'}[color]))
     {
@@ -142,6 +145,7 @@ function compVsComp(color) {
 
 //Essentially makes a move with depth 1, this way it wont make an inherently bad initial move,
 //But will almost certainly not make optimal moves, allowing the player to catch up.
+//Also used in this file for "Random" opponent moves
 //Written by me
 function getNonOptimalMove(color) {
     var children = game.ugly_moves({verbose: true});
@@ -161,6 +165,7 @@ function getNonOptimalMove(color) {
     return bestMove;
 }
 
+//returns completely random move
 function getRandomMove() {
     console.log("random move for white");
     var children = game.ugly_moves({verbose: true});
