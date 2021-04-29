@@ -111,12 +111,13 @@ function makeBestMove(color) {
         //"random" opponent moves
         if (turnNumber == 1) {
             var move = getRandomMove();
-        }
-        var random = Math.floor(Math.random() * 10);
-        if (random < 7) {
-            var move = getNonOptimalMove("w");
         } else {
-            var move = getRandomMove();
+            var random = Math.floor(Math.random() * 10);
+            if (random < 7) {
+                var move = getNonOptimalMove("w");
+            } else {
+                var move = getRandomMove();
+            }
         }
     }
 
