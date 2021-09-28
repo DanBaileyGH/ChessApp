@@ -14,10 +14,8 @@ function makeBestMove(color) {
 
     //Artificial stupidity
     if (moveValue < 10000) { 
-        //Bot doesnt miss forced mate in 2s while ahead, avoids frustration with getting stuck on just your king
         var random = Math.floor(Math.random() * globalSum);
-        if (globalSum > 300 && !(random > (globalSum - 200))) { 
-            //Random chance of worse move, only when bot is fairly ahead, more likely the more ahead
+        if (globalSum > 300 && random < (globalSum - 200)) { 
             move = getNonOptimalMove(color);
         }
     }
@@ -64,7 +62,7 @@ function makeBestMove(color) {
 //Written by me
 function getNonOptimalMove(color) {
     var children = game.ugly_moves({verbose: true});
-    var bestMove = null
+    var bestMove = null;
     var bestMoveValue = Number.NEGATIVE_INFINITY;
     //Checking each possible move to see its evaluation, and finds the highest evaluated move
     for (var i = 0; i < children.length; i++) {
@@ -84,5 +82,7 @@ function getNonOptimalMove(color) {
 //Written by me
 function fudgeEvaluation(sum) {
     random = Math.floor(Math.random() * 20) - 10;
-    return (sum + random)
+    return (sum + random);
 }
+
+
